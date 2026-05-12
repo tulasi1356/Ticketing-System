@@ -2,4 +2,4 @@
 /tmp/
 /bin/
 .env
-/environments/
+/config/environments/

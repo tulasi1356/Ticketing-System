@@ -1,0 +1,4 @@
+# Rails generated temp (bootsnap, cache, pids, sockets)
+/tmp/
+bin/
+.env

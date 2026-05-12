@@ -1,0 +1,569 @@
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticket-Management-clean/backend/ticketing_api/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+Started GET "/users/find_by_email?email=[FILTERED]" for 127.0.0.1 at 2026-05-12 12:41:53 +0530
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='TicketingApi'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 9 pending migrations:
+
+db/migrate/20260505104815_create_users.rb
+db/migrate/20260506042202_create_projects.rb
+db/migrate/20260506051428_create_project_users.rb
+db/migrate/20260506051434_remove_user_from_projects.rb
+db/migrate/20260506073231_create_sprints.rb
+db/migrate/20260506103805_create_tickets.rb
+db/migrate/20260508073426_create_comments.rb
+db/migrate/20260508120000_add_start_and_end_date_to_tickets.rb
+db/migrate/20260509120001_add_attachment_urls_to_tickets.rb
+
+
+):
+  
+activerecord (8.1.3) lib/active_record/migration.rb:743:in 'ActiveRecord::Migration.check_pending_migrations'
+activerecord (8.1.3) lib/active_record/migration.rb:660:in 'block (2 levels) in ActiveRecord::Migration::CheckPending#call'
+activesupport (8.1.3) lib/active_support/file_update_checker.rb:88:in 'ActiveSupport::FileUpdateChecker#execute'
+activerecord (8.1.3) lib/active_record/migration.rb:665:in 'block in ActiveRecord::Migration::CheckPending#call'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'Thread::Mutex#synchronize'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'ActiveRecord::Migration::CheckPending#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:31:in 'block in ActionDispatch::Callbacks#call'
+activesupport (8.1.3) lib/active_support/callbacks.rb:101:in 'ActiveSupport::Callbacks#run_callbacks'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:30:in 'ActionDispatch::Callbacks#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in 'ActionDispatch::ActionableExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:31:in 'ActionDispatch::DebugExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/show_exceptions.rb:32:in 'ActionDispatch::ShowExceptions#call'
+railties (8.1.3) lib/rails/rack/logger.rb:41:in 'Rails::Rack::Logger#call_app'
+railties (8.1.3) lib/rails/rack/logger.rb:29:in 'Rails::Rack::Logger#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/remote_ip.rb:98:in 'ActionDispatch::RemoteIp#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/request_id.rb:34:in 'ActionDispatch::RequestId#call'
+rack (3.2.6) lib/rack/runtime.rb:24:in 'Rack::Runtime#call'
+activesupport (8.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:30:in 'ActiveSupport::Cache::Strategy::LocalCache::Middleware#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:61:in 'block in ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:26:in 'ActionDispatch::ServerTiming::Subscriber#collect_events'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:60:in 'ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/static.rb:27:in 'ActionDispatch::Static#call'
+rack (3.2.6) lib/rack/sendfile.rb:131:in 'Rack::Sendfile#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/host_authorization.rb:143:in 'ActionDispatch::HostAuthorization#call'
+rack-cors (3.0.0) lib/rack/cors.rb:102:in 'Rack::Cors#call'
+railties (8.1.3) lib/rails/engine.rb:534:in 'Rails::Engine#call'
+puma (8.0.1) lib/puma/configuration.rb:305:in 'Puma::Configuration::ConfigMiddleware#call'
+puma (8.0.1) lib/puma/response.rb:79:in 'block in Puma::Response#handle_request'
+puma (8.0.1) lib/puma/thread_pool.rb:434:in 'Puma::ThreadPool#with_force_shutdown'
+puma (8.0.1) lib/puma/response.rb:78:in 'Puma::Response#handle_request'
+puma (8.0.1) lib/puma/server.rb:508:in 'Puma::Server#process_client'
+puma (8.0.1) lib/puma/server.rb:263:in 'block in Puma::Server#run'
+puma (8.0.1) lib/puma/thread_pool.rb:246:in 'block in Puma::ThreadPool#spawn_thread'
+Started GET "/users/find_by_email?email=[FILTERED]" for 127.0.0.1 at 2026-05-12 12:42:09 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 9 pending migrations:
+
+db/migrate/20260505104815_create_users.rb
+db/migrate/20260506042202_create_projects.rb
+db/migrate/20260506051428_create_project_users.rb
+db/migrate/20260506051434_remove_user_from_projects.rb
+db/migrate/20260506073231_create_sprints.rb
+db/migrate/20260506103805_create_tickets.rb
+db/migrate/20260508073426_create_comments.rb
+db/migrate/20260508120000_add_start_and_end_date_to_tickets.rb
+db/migrate/20260509120001_add_attachment_urls_to_tickets.rb
+
+
+):
+  
+activerecord (8.1.3) lib/active_record/migration.rb:743:in 'ActiveRecord::Migration.check_pending_migrations'
+activerecord (8.1.3) lib/active_record/migration.rb:660:in 'block (2 levels) in ActiveRecord::Migration::CheckPending#call'
+activesupport (8.1.3) lib/active_support/file_update_checker.rb:88:in 'ActiveSupport::FileUpdateChecker#execute'
+activerecord (8.1.3) lib/active_record/migration.rb:665:in 'block in ActiveRecord::Migration::CheckPending#call'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'Thread::Mutex#synchronize'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'ActiveRecord::Migration::CheckPending#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:31:in 'block in ActionDispatch::Callbacks#call'
+activesupport (8.1.3) lib/active_support/callbacks.rb:101:in 'ActiveSupport::Callbacks#run_callbacks'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:30:in 'ActionDispatch::Callbacks#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in 'ActionDispatch::ActionableExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:31:in 'ActionDispatch::DebugExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/show_exceptions.rb:32:in 'ActionDispatch::ShowExceptions#call'
+railties (8.1.3) lib/rails/rack/logger.rb:41:in 'Rails::Rack::Logger#call_app'
+railties (8.1.3) lib/rails/rack/logger.rb:29:in 'Rails::Rack::Logger#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/remote_ip.rb:98:in 'ActionDispatch::RemoteIp#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/request_id.rb:34:in 'ActionDispatch::RequestId#call'
+rack (3.2.6) lib/rack/runtime.rb:24:in 'Rack::Runtime#call'
+activesupport (8.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:30:in 'ActiveSupport::Cache::Strategy::LocalCache::Middleware#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:61:in 'block in ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:26:in 'ActionDispatch::ServerTiming::Subscriber#collect_events'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:60:in 'ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/static.rb:27:in 'ActionDispatch::Static#call'
+rack (3.2.6) lib/rack/sendfile.rb:131:in 'Rack::Sendfile#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/host_authorization.rb:143:in 'ActionDispatch::HostAuthorization#call'
+rack-cors (3.0.0) lib/rack/cors.rb:102:in 'Rack::Cors#call'
+railties (8.1.3) lib/rails/engine.rb:534:in 'Rails::Engine#call'
+puma (8.0.1) lib/puma/configuration.rb:305:in 'Puma::Configuration::ConfigMiddleware#call'
+puma (8.0.1) lib/puma/response.rb:79:in 'block in Puma::Response#handle_request'
+puma (8.0.1) lib/puma/thread_pool.rb:434:in 'Puma::ThreadPool#with_force_shutdown'
+puma (8.0.1) lib/puma/response.rb:78:in 'Puma::Response#handle_request'
+puma (8.0.1) lib/puma/server.rb:508:in 'Puma::Server#process_client'
+puma (8.0.1) lib/puma/server.rb:263:in 'block in Puma::Server#run'
+puma (8.0.1) lib/puma/thread_pool.rb:246:in 'block in Puma::ThreadPool#spawn_thread'
+Started GET "/users/find_by_email?email=[FILTERED]" for 127.0.0.1 at 2026-05-12 12:42:17 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 9 pending migrations:
+
+db/migrate/20260505104815_create_users.rb
+db/migrate/20260506042202_create_projects.rb
+db/migrate/20260506051428_create_project_users.rb
+db/migrate/20260506051434_remove_user_from_projects.rb
+db/migrate/20260506073231_create_sprints.rb
+db/migrate/20260506103805_create_tickets.rb
+db/migrate/20260508073426_create_comments.rb
+db/migrate/20260508120000_add_start_and_end_date_to_tickets.rb
+db/migrate/20260509120001_add_attachment_urls_to_tickets.rb
+
+
+):
+  
+activerecord (8.1.3) lib/active_record/migration.rb:743:in 'ActiveRecord::Migration.check_pending_migrations'
+activerecord (8.1.3) lib/active_record/migration.rb:660:in 'block (2 levels) in ActiveRecord::Migration::CheckPending#call'
+activesupport (8.1.3) lib/active_support/file_update_checker.rb:88:in 'ActiveSupport::FileUpdateChecker#execute'
+activerecord (8.1.3) lib/active_record/migration.rb:665:in 'block in ActiveRecord::Migration::CheckPending#call'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'Thread::Mutex#synchronize'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'ActiveRecord::Migration::CheckPending#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:31:in 'block in ActionDispatch::Callbacks#call'
+activesupport (8.1.3) lib/active_support/callbacks.rb:101:in 'ActiveSupport::Callbacks#run_callbacks'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:30:in 'ActionDispatch::Callbacks#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in 'ActionDispatch::ActionableExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:31:in 'ActionDispatch::DebugExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/show_exceptions.rb:32:in 'ActionDispatch::ShowExceptions#call'
+railties (8.1.3) lib/rails/rack/logger.rb:41:in 'Rails::Rack::Logger#call_app'
+railties (8.1.3) lib/rails/rack/logger.rb:29:in 'Rails::Rack::Logger#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/remote_ip.rb:98:in 'ActionDispatch::RemoteIp#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/request_id.rb:34:in 'ActionDispatch::RequestId#call'
+rack (3.2.6) lib/rack/runtime.rb:24:in 'Rack::Runtime#call'
+activesupport (8.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:30:in 'ActiveSupport::Cache::Strategy::LocalCache::Middleware#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:61:in 'block in ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:26:in 'ActionDispatch::ServerTiming::Subscriber#collect_events'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:60:in 'ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/static.rb:27:in 'ActionDispatch::Static#call'
+rack (3.2.6) lib/rack/sendfile.rb:131:in 'Rack::Sendfile#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/host_authorization.rb:143:in 'ActionDispatch::HostAuthorization#call'
+rack-cors (3.0.0) lib/rack/cors.rb:102:in 'Rack::Cors#call'
+railties (8.1.3) lib/rails/engine.rb:534:in 'Rails::Engine#call'
+puma (8.0.1) lib/puma/configuration.rb:305:in 'Puma::Configuration::ConfigMiddleware#call'
+puma (8.0.1) lib/puma/response.rb:79:in 'block in Puma::Response#handle_request'
+puma (8.0.1) lib/puma/thread_pool.rb:434:in 'Puma::ThreadPool#with_force_shutdown'
+puma (8.0.1) lib/puma/response.rb:78:in 'Puma::Response#handle_request'
+puma (8.0.1) lib/puma/server.rb:508:in 'Puma::Server#process_client'
+puma (8.0.1) lib/puma/server.rb:263:in 'block in Puma::Server#run'
+puma (8.0.1) lib/puma/thread_pool.rb:246:in 'block in Puma::ThreadPool#spawn_thread'
+Started GET "/users/find_by_email?email=[FILTERED]" for 127.0.0.1 at 2026-05-12 12:42:18 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate
+
+You have 9 pending migrations:
+
+db/migrate/20260505104815_create_users.rb
+db/migrate/20260506042202_create_projects.rb
+db/migrate/20260506051428_create_project_users.rb
+db/migrate/20260506051434_remove_user_from_projects.rb
+db/migrate/20260506073231_create_sprints.rb
+db/migrate/20260506103805_create_tickets.rb
+db/migrate/20260508073426_create_comments.rb
+db/migrate/20260508120000_add_start_and_end_date_to_tickets.rb
+db/migrate/20260509120001_add_attachment_urls_to_tickets.rb
+
+
+):
+  
+activerecord (8.1.3) lib/active_record/migration.rb:743:in 'ActiveRecord::Migration.check_pending_migrations'
+activerecord (8.1.3) lib/active_record/migration.rb:660:in 'block (2 levels) in ActiveRecord::Migration::CheckPending#call'
+activesupport (8.1.3) lib/active_support/file_update_checker.rb:88:in 'ActiveSupport::FileUpdateChecker#execute'
+activerecord (8.1.3) lib/active_record/migration.rb:665:in 'block in ActiveRecord::Migration::CheckPending#call'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'Thread::Mutex#synchronize'
+activerecord (8.1.3) lib/active_record/migration.rb:657:in 'ActiveRecord::Migration::CheckPending#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:31:in 'block in ActionDispatch::Callbacks#call'
+activesupport (8.1.3) lib/active_support/callbacks.rb:101:in 'ActiveSupport::Callbacks#run_callbacks'
+actionpack (8.1.3) lib/action_dispatch/middleware/callbacks.rb:30:in 'ActionDispatch::Callbacks#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in 'ActionDispatch::ActionableExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:31:in 'ActionDispatch::DebugExceptions#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/show_exceptions.rb:32:in 'ActionDispatch::ShowExceptions#call'
+railties (8.1.3) lib/rails/rack/logger.rb:41:in 'Rails::Rack::Logger#call_app'
+railties (8.1.3) lib/rails/rack/logger.rb:29:in 'Rails::Rack::Logger#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/remote_ip.rb:98:in 'ActionDispatch::RemoteIp#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/request_id.rb:34:in 'ActionDispatch::RequestId#call'
+rack (3.2.6) lib/rack/runtime.rb:24:in 'Rack::Runtime#call'
+activesupport (8.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:30:in 'ActiveSupport::Cache::Strategy::LocalCache::Middleware#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:61:in 'block in ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:26:in 'ActionDispatch::ServerTiming::Subscriber#collect_events'
+actionpack (8.1.3) lib/action_dispatch/middleware/server_timing.rb:60:in 'ActionDispatch::ServerTiming#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/executor.rb:20:in 'ActionDispatch::Executor#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/static.rb:27:in 'ActionDispatch::Static#call'
+rack (3.2.6) lib/rack/sendfile.rb:131:in 'Rack::Sendfile#call'
+actionpack (8.1.3) lib/action_dispatch/middleware/host_authorization.rb:143:in 'ActionDispatch::HostAuthorization#call'
+rack-cors (3.0.0) lib/rack/cors.rb:102:in 'Rack::Cors#call'
+railties (8.1.3) lib/rails/engine.rb:534:in 'Rails::Engine#call'
+puma (8.0.1) lib/puma/configuration.rb:305:in 'Puma::Configuration::ConfigMiddleware#call'
+puma (8.0.1) lib/puma/response.rb:79:in 'block in Puma::Response#handle_request'
+puma (8.0.1) lib/puma/thread_pool.rb:434:in 'Puma::ThreadPool#with_force_shutdown'
+puma (8.0.1) lib/puma/response.rb:78:in 'Puma::Response#handle_request'
+puma (8.0.1) lib/puma/server.rb:508:in 'Puma::Server#process_client'
+puma (8.0.1) lib/puma/server.rb:263:in 'block in Puma::Server#run'
+puma (8.0.1) lib/puma/thread_pool.rb:246:in 'block in Puma::ThreadPool#spawn_thread'
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticket-Management-clean/backend/ticketing_api/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticket-Management-clean/backend/ticketing_api/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-05-12 07:13:12.708773', '2026-05-12 07:13:12.708774') RETURNING "key" /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+Migrating to CreateUsers (20260505104815)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "email" varchar, "password_digest" varchar, "role" integer DEFAULT 0, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260505104815') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to CreateProjects (20260506042202)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "projects" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" text, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_b872a6760a"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_projects_on_user_id" ON "projects" ("user_id") /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260506042202') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to CreateProjectUsers (20260506051428)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "project_users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "project_id" integer NOT NULL, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_1bf16ed5d0"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+, CONSTRAINT "fk_rails_996d73fecd"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_project_users_on_project_id" ON "project_users" ("project_id") /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_project_users_on_user_id" ON "project_users" ("user_id") /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260506051428') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to RemoveUserFromProjects (20260506051434)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aprojects" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" text, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aprojects_on_user_id" ON "aprojects" ("user_id") /*application='TicketingApi'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aprojects" ("id","name","description","user_id","created_at","updated_at")
+                     SELECT "id","name","description","user_id","created_at","updated_at" FROM "projects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "projects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "projects" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" text, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_projects_on_user_id" ON "projects" ("user_id") /*application='TicketingApi'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "projects" ("id","name","description","user_id","created_at","updated_at")
+                     SELECT "id","name","description","user_id","created_at","updated_at" FROM "aprojects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aprojects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aprojects" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" text, "user_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aprojects_on_user_id" ON "aprojects" ("user_id") /*application='TicketingApi'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aprojects" ("id","name","description","user_id","created_at","updated_at")
+                     SELECT "id","name","description","user_id","created_at","updated_at" FROM "projects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "projects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "projects" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='TicketingApi'*/[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "projects" ("id","name","description","created_at","updated_at")
+                     SELECT "id","name","description","created_at","updated_at" FROM "aprojects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aprojects" /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0 /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1 /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260506051434') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to CreateSprints (20260506073231)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "sprints" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "start_date" date, "end_date" date, "status" integer, "project_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_e8206c9686"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_sprints_on_project_id" ON "sprints" ("project_id") /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260506073231') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to CreateTickets (20260506103805)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "tickets" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "description" text, "status" integer, "issue_type" integer, "priority" integer, "start_date" date, "end_date" date, "project_id" integer NOT NULL, "sprint_id" integer NOT NULL, "assignee_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_8ef7458990"
+FOREIGN KEY ("project_id")
+  REFERENCES "projects" ("id")
+, CONSTRAINT "fk_rails_6dba7ba6ea"
+FOREIGN KEY ("sprint_id")
+  REFERENCES "sprints" ("id")
+, CONSTRAINT "fk_rails_ea25a37fb1"
+FOREIGN KEY ("assignee_id")
+  REFERENCES "users" ("id")
+) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tickets_on_project_id" ON "tickets" ("project_id") /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_tickets_on_sprint_id" ON "tickets" ("sprint_id") /*application='TicketingApi'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_tickets_on_assignee_id" ON "tickets" ("assignee_id") /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260506103805') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to CreateComments (20260508073426)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "comments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "ticket_id" integer NOT NULL, "user_id" integer NOT NULL, "message" text, "attachment_urls" json DEFAULT '[]', "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_e013b60ecb"
+FOREIGN KEY ("ticket_id")
+  REFERENCES "tickets" ("id")
+, CONSTRAINT "fk_rails_03de2dc08c"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+) /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_comments_on_ticket_id" ON "comments" ("ticket_id") /*application='TicketingApi'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_comments_on_user_id" ON "comments" ("user_id") /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260508073426') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to AddStartAndEndDateToTickets (20260508120000)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "tickets" ADD "start_date" date /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TRANSACTION /*application='TicketingApi'*/[0m
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticket-Management-clean/backend/ticketing_api/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+Migrating to AddStartAndEndDateToTickets (20260508120000)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260508120000') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+Migrating to AddAttachmentUrlsToTickets (20260509120001)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "tickets" ADD "attachment_urls" json DEFAULT '[]' /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260509120001') RETURNING "version" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticket-Management-clean/backend/ticketing_api/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = 'adminticketingsystem@yopmail.com' LIMIT 1 /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='TicketingApi'*/[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = 'adminticketingsystem@yopmail.com' LIMIT 1 /*application='TicketingApi'*/[0m
+  [1m[36mUser Create (0.1ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "role", "created_at", "updated_at") VALUES ('Admin', 'adminticketingsystem@yopmail.com', '$2a$12$j6AFCICNb9i.6BKfU1gBOetAKMf.Hk4LeH6xGuo51NfBKVkEaCcKi', 1, '2026-05-12 07:14:18.978208', '2026-05-12 07:14:18.978208') RETURNING "id" /*application='TicketingApi'*/[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='TicketingApi'*/[0m
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticket-Management-clean/backend/ticketing_api/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+Started GET "/users/find_by_email?email=[FILTERED]" for 127.0.0.1 at 2026-05-12 12:44:26 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+Processing by UsersController#find_by_email as */*
+  Parameters: {"email" => "[FILTERED]", "user" => {}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = 'adminticketingsystem@yopmail.com' LIMIT 1 /*action='find_by_email',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:12:in 'UsersController#find_by_email'
+Completed 200 OK in 14ms (Views: 0.2ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/projects" for 127.0.0.1 at 2026-05-12 12:44:26 +0530
+Processing by ProjectsController#index as */*
+  Parameters: {"project" => {}}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mProject Load (0.0ms)[0m  [1m[34mSELECT "projects".* FROM "projects" /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/projects_controller.rb:14:in 'ProjectsController#index'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/sprints" for 127.0.0.1 at 2026-05-12 12:44:26 +0530
+Processing by SprintsController#index as */*
+  Parameters: {"sprint" => {}}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mSprint Load (0.2ms)[0m  [1m[34mSELECT "sprints".* FROM "sprints" /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/sprints_controller.rb:23:in 'SprintsController#index'
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-05-12 12:44:29 +0530
+Processing by UsersController#index as */*
+  Parameters: {"user" => {}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:8:in 'UsersController#index'
+Completed 200 OK in 2ms (Views: 0.8ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-05-12 12:44:30 +0530
+Started GET "/projects" for 127.0.0.1 at 2026-05-12 12:44:30 +0530
+Processing by UsersController#index as */*
+  Parameters: {"user" => {}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+Processing by ProjectsController#index as */*
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='TicketingApi',controller='users'*/[0m
+  Parameters: {"project" => {}}
+  ↳ app/controllers/users_controller.rb:8:in 'UsersController#index'
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='projects'*/[0m
+Completed 200 OK in 4ms (Views: 2.4ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mProject Load (0.1ms)[0m  [1m[34mSELECT "projects".* FROM "projects" /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/projects_controller.rb:14:in 'ProjectsController#index'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.9ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/projects" for 127.0.0.1 at 2026-05-12 12:44:31 +0530
+Started GET "/sprints" for 127.0.0.1 at 2026-05-12 12:44:31 +0530
+Processing by ProjectsController#index as */*
+  Parameters: {"project" => {}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mProject Load (0.1ms)[0m  [1m[34mSELECT "projects".* FROM "projects" /*action='index',application='TicketingApi',controller='projects'*/[0m
+Processing by SprintsController#index as */*
+  ↳ app/controllers/projects_controller.rb:14:in 'ProjectsController#index'
+  Parameters: {"sprint" => {}}
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mSprint Load (0.1ms)[0m  [1m[34mSELECT "sprints".* FROM "sprints" /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/sprints_controller.rb:23:in 'SprintsController#index'
+Completed 200 OK in 3ms (Views: 1.5ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-05-12 12:44:32 +0530
+Processing by UsersController#index as */*
+  Parameters: {"user" => {}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:8:in 'UsersController#index'
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticketing-System/backend/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticketing-System/backend/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = 'adminticketingsystem@yopmail.com' LIMIT 1 /*application='TicketingApi'*/[0m
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticketing-System/backend/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticketing-System/backend/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+[Mailer] SENDGRID_API_KEY unset — mail saved under /Users/btulasi/Desktop/Ticketing-System/backend/tmp/mail only. Add SENDGRID_API_KEY + SENDGRID_FROM_EMAIL to .env.
+Started GET "/users/find_by_email?email=[FILTERED]" for 127.0.0.1 at 2026-05-12 12:59:14 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='TicketingApi'*/[0m
+Processing by UsersController#find_by_email as */*
+  Parameters: {"email" => "[FILTERED]", "user" => {}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = 'adminticketingsystem@yopmail.com' LIMIT 1 /*action='find_by_email',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:12:in 'UsersController#find_by_email'
+Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/projects" for 127.0.0.1 at 2026-05-12 12:59:14 +0530
+Processing by ProjectsController#index as */*
+  Parameters: {"project" => {}}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mProject Load (0.0ms)[0m  [1m[34mSELECT "projects".* FROM "projects" /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/projects_controller.rb:14:in 'ProjectsController#index'
+Completed 200 OK in 1ms (Views: 0.0ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/sprints" for 127.0.0.1 at 2026-05-12 12:59:14 +0530
+Processing by SprintsController#index as */*
+  Parameters: {"sprint" => {}}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mSprint Load (0.2ms)[0m  [1m[34mSELECT "sprints".* FROM "sprints" /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/sprints_controller.rb:23:in 'SprintsController#index'
+Completed 200 OK in 1ms (Views: 0.4ms | ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-05-12 12:59:18 +0530
+Processing by UsersController#index as */*
+  Parameters: {"user" => {}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:8:in 'UsersController#index'
+Completed 200 OK in 3ms (Views: 1.1ms | ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-05-12 12:59:20 +0530
+Started GET "/projects" for 127.0.0.1 at 2026-05-12 12:59:20 +0530
+Processing by UsersController#index as */*
+  Parameters: {"user" => {}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:8:in 'UsersController#index'
+Processing by ProjectsController#index as */*
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+  Parameters: {"project" => {}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mProject Load (0.1ms)[0m  [1m[34mSELECT "projects".* FROM "projects" /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/projects_controller.rb:14:in 'ProjectsController#index'
+Completed 200 OK in 1ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/projects" for 127.0.0.1 at 2026-05-12 12:59:21 +0530
+Processing by ProjectsController#index as */*
+  Parameters: {"project" => {}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mProject Load (0.1ms)[0m  [1m[34mSELECT "projects".* FROM "projects" /*action='index',application='TicketingApi',controller='projects'*/[0m
+  ↳ app/controllers/projects_controller.rb:14:in 'ProjectsController#index'
+Completed 200 OK in 2ms (Views: 0.1ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/sprints" for 127.0.0.1 at 2026-05-12 12:59:21 +0530
+Processing by SprintsController#index as */*
+  Parameters: {"sprint" => {}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mSprint Load (0.1ms)[0m  [1m[34mSELECT "sprints".* FROM "sprints" /*action='index',application='TicketingApi',controller='sprints'*/[0m
+  ↳ app/controllers/sprints_controller.rb:23:in 'SprintsController#index'
+Completed 200 OK in 1ms (Views: 0.6ms | ActiveRecord: 0.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-05-12 12:59:23 +0530
+Processing by UsersController#index as */*
+  Parameters: {"user" => {}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:8:in 'UsersController#index'
+Completed 200 OK in 3ms (Views: 1.5ms | ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/users" for 127.0.0.1 at 2026-05-12 12:59:39 +0530
+Processing by UsersController#index as */*
+  Parameters: {"user" => {}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = 1 LIMIT 1 /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/application_controller.rb:8:in 'ApplicationController#current_user'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" /*action='index',application='TicketingApi',controller='users'*/[0m
+  ↳ app/controllers/users_controller.rb:8:in 'UsersController#index'
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+

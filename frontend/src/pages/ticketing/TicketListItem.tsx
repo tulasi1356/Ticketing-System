@@ -91,7 +91,7 @@ export function TicketListItem({
       type="button"
       onClick={onSelect}
       className={cn(
-        "grid w-full min-w-0 cursor-pointer grid-cols-[auto_auto_minmax(0,1fr)_5.75rem_9.5rem_auto] items-center gap-x-3 rounded-lg border bg-white px-3 py-2.5 text-left shadow-sm",
+        "flex w-full min-w-0 cursor-pointer items-center gap-3 rounded-lg border bg-white py-2.5 pl-3 pr-4 text-left shadow-sm",
         "transition-shadow hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30",
         selected ? "border-blue-400 ring-1 ring-blue-100" : "border-gray-200"
       )}
@@ -104,31 +104,49 @@ export function TicketListItem({
         }}
       /> */}
 
-      <IssueIcon issueType={ticket.issue_type} />
+      <span className="flex size-4 shrink-0 items-center justify-center" aria-hidden>
+        <IssueIcon issueType={ticket.issue_type} />
+      </span>
 
       <span className="shrink-0 font-mono text-xs font-semibold text-gray-500">{ticketKey}</span>
 
-      <span className="min-w-0 truncate font-medium text-gray-900">{ticket.title}</span>
+      <span className="min-w-0 flex-1 truncate font-medium text-gray-600">{ticket.title}</span>
 
-      <div className="flex min-h-[1.75rem] items-center justify-start">{priorityBadge(ticket.priority)}</div>
+      <div className="flex w-[6.25rem] shrink-0 items-center justify-start">
+        {priorityBadge(ticket.priority)}
+      </div>
 
-      <div className="flex min-h-[1.75rem] items-center justify-start">{statusBadge(ticket.status)}</div>
+      <div className="flex w-[9.5rem] shrink-0 items-center justify-start">
+        {statusBadge(ticket.status)}
+      </div>
 
-      <div className="flex min-w-0 justify-self-end">
+      <div className="flex w-[12rem] min-w-0 shrink-0 items-center gap-2">
         {ticket.assignee ? (
           <Tooltip
-            content={ticket.assignee.email?.trim() ? ticket.assignee.email : "No email on file"}
+            content={
+              <span className="block max-w-xs text-left">
+                <span className="font-medium">{ticket.assignee.name}</span>
+                {ticket.assignee.email?.trim() ? (
+                  <>
+                    <br />
+                    <span className="text-white/85">{ticket.assignee.email}</span>
+                  </>
+                ) : null}
+              </span>
+            }
             side="top"
           >
-            <span className="flex max-w-[min(200px,28vw)] items-center gap-2 rounded-md px-1 py-0.5 text-left">
-              <AssigneeAvatar name={ticket.assignee.name} size="sm" className="ring-2 ring-white" />
-              <span className="truncate text-sm font-medium text-gray-900">{ticket.assignee.name}</span>
+            <span className="flex min-w-0 w-full items-center gap-2 rounded-md py-0.5 text-left">
+              <AssigneeAvatar name={ticket.assignee.name} size="sm" className="shrink-0 ring-2 ring-white" />
+              <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-900">
+                {ticket.assignee.name}
+              </span>
             </span>
           </Tooltip>
         ) : (
-          <span className="flex items-center gap-2 text-sm text-gray-500">
-            <AssigneeAvatar name="Unassigned" size="sm" />
-            Unassigned
+          <span className="flex min-w-0 w-full items-center gap-2 text-sm text-gray-500">
+            <AssigneeAvatar name="Unassigned" size="sm" className="shrink-0" />
+            <span className="min-w-0 flex-1 truncate">Unassigned</span>
           </span>
         )}
       </div>

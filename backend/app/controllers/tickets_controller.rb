@@ -42,7 +42,7 @@ class TicketsController < ApplicationController
         page = params[:page].presence&.to_i
         page = 1 if page.nil? || page < 1
 
-        @pagy, records = pagy(:offset, result[:relation], page: page, limit: 20)
+        @pagy, records = pagy(:offset, result[:relation], page: page, limit: 8)
 
         render json: {
             tickets: records.as_json(

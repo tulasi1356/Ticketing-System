@@ -201,9 +201,10 @@ export function SprintDashboardPanel({
         <div className="flex flex-wrap items-center gap-2">
           {isAdmin && selectedProjectId ? (
             <Button
+              className="flex items-center gap-2"
               type="button"
-              variant="secondary"
-              size="sm"
+              variant="white"
+              size="md"
               disabled={exportBusy}
               onClick={() => void runAdminExport()}
             >
@@ -214,6 +215,7 @@ export function SprintDashboardPanel({
                 </>
               ) : (
                 <>
+
                   <Download className="mr-1 size-4" aria-hidden />
                   Export
                 </>
@@ -263,7 +265,7 @@ export function SprintDashboardPanel({
         ) : (
           <>
             <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-              <aside className="w-full shrink-0 lg:sticky lg:top-4 lg:w-[280px] lg:self-start">
+              <aside className="w-full shrink-0 lg:sticky  lg:w-[280px] lg:self-start">
                 <Card className="border-gray-200 shadow-sm">
                   <CardHeader className="space-y-1 border-b border-gray-100 pb-3">
                     <div className="flex items-start justify-between gap-2">

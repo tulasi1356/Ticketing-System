@@ -270,6 +270,7 @@ export function CreateTicket({
             methods.reset(emptyDefaults())
         } catch (e) {
             console.error("Could not create ticket:", e)
+            toast.error(e.message)
         }
     }
 

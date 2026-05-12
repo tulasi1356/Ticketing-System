@@ -8,9 +8,7 @@ class TicketsController < ApplicationController
         result = Tickets::CreateService.call(current_user: current_user, params: params)
         if result[:ok]
             ticket = result[:ticket]
-            render json: ticket.as_json(
-                include: { assignee: { only: [:id, :name, :email, :role] } }
-            ), status: :created
+            render json: TicketBlueprint.render_as_hash(ticket, view: :detail), status: :created
         else
             render json: result[:body], status: result[:status]
         end
@@ -24,9 +22,7 @@ class TicketsController < ApplicationController
         )
         if result[:ok]
             ticket = result[:ticket]
-            render json: ticket.as_json(
-                include: { assignee: { only: [:id, :name, :email, :role] } }
-            ), status: :ok
+            render json: TicketBlueprint.render_as_hash(ticket, view: :detail), status: :ok
         else
             render json: result[:body], status: result[:status]
         end
@@ -45,9 +41,7 @@ class TicketsController < ApplicationController
         @pagy, records = pagy(:offset, result[:relation], page: page, limit: 8)
 
         render json: {
-            tickets: records.as_json(
-                include: { assignee: { only: [:id, :name, :email] } }
-            ),
+            tickets: TicketBlueprint.render_as_hash(records, view: :board),
             meta: {
                 page: @pagy.page,
                 per_page: @pagy.limit,

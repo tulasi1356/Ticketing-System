@@ -39,6 +39,9 @@ gem "image_processing", "~> 1.2"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
+# JSON serialization for API responses
+gem "blueprinter"
+
 group :development, :test do
   gem "dotenv-rails"
 

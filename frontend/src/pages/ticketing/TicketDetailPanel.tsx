@@ -20,7 +20,7 @@ import { Input } from "../../components/ui/input"
 import { Select, type SelectOption } from "../../components/ui/select"
 import { useCreateComment } from "../../hooks/comments/useCreateComment"
 import { useGetComments } from "../../hooks/comments/useGetComments"
-import { useAdminTicketExport } from "../../hooks/useAdminTicketExport"
+// import { useAdminTicketExport } from "../../hooks/useAdminTicketExport"
 import { useUpdateTicket } from "../../hooks/tickets/useUpdateTicket"
 import { cn } from "../../lib/utils"
 import type { ProjectUser, Ticket } from "./types"
@@ -222,7 +222,7 @@ export function TicketDetailPanel({
   const [commentAttachments, setCommentAttachments] = useState<string[]>([])
   const [commentNewUrl, setCommentNewUrl] = useState("")
   const [commentUploadBusy, setCommentUploadBusy] = useState(false)
-  const { busy: exportBusy, run: runAdminExport } = useAdminTicketExport()
+  // const { busy: exportBusy, run: runAdminExport } = useAdminTicketExport()
 
   useEffect(() => {
     if (editing) return
@@ -449,7 +449,7 @@ export function TicketDetailPanel({
                 </>
               ) : (
                 <>
-                  {isAdmin ? (
+                  {/* {isAdmin ? (
                     <Button
                       type="button"
                       variant="secondary"
@@ -469,7 +469,7 @@ export function TicketDetailPanel({
                         </>
                       )}
                     </Button>
-                  ) : null}
+                  ) : null} */}
                   <Button type="button" variant="white" size="sm" onClick={beginEdit}>
                     <Pencil className="mr-1 size-4" aria-hidden />
                     Edit
@@ -505,7 +505,7 @@ export function TicketDetailPanel({
               <textarea
                 value={draftDescription}
                 onChange={(e) => setDraftDescription(e.target.value)}
-                rows={5}
+                rows={3}
                 className={cn(
                   "w-full resize-y rounded-md border border-gray-300 px-3 py-2 text-sm leading-relaxed text-gray-900 outline-none transition",
                   "focus-visible:ring-2 focus-visible:ring-[color:var(--app-focus-ring-color)] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
@@ -545,12 +545,7 @@ export function TicketDetailPanel({
               />
             )}
             {editing ? (
-              <div className="mt-4 space-y-3 rounded-lg border border-dashed border-gray-200 bg-white px-3 py-3">
-                <p className="text-xs text-gray-500">
-                  Upload images (max {MAX_UPLOAD_HINT} each) or add an https link. While developing, the UI talks to
-                  the API through Vite&apos;s proxy; set <code className="text-[11px]">VITE_API_URL</code> if you skip
-                  the dev server proxy.
-                </p>
+              <div className="mt-2 space-y-3 rounded-lg border border-dashed border-gray-200 bg-white px-3 py-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <Input
                     size="sm"
@@ -562,13 +557,14 @@ export function TicketDetailPanel({
                     aria-label="Attachment URL"
                   />
                   <Button
+                    className="flex items-center gap-2"
                     type="button"
                     variant="secondary"
                     size="sm"
                     onClick={addUrlAttachment}
                     disabled={ticketUploadBusy}
                   >
-                    <Link2 className="mr-1 size-4" aria-hidden />
+                    <Link2 className="size-4" aria-hidden />
                     Add link
                   </Button>
                   <FilePickButton
@@ -600,7 +596,7 @@ export function TicketDetailPanel({
             ) : commentsError ? (
               <p className="text-sm text-red-600">Could not load comments.</p>
             ) : comments && comments.length > 0 ? (
-              <ul className="mb-4 flex flex-col gap-3">
+              <ul className="mb-4 flex flex-col gap-3 max-h-[150px] overflow-y-auto">
                 {comments.map((c) => {
                   const urls = normalizeAttachmentUrls(c.attachment_urls)
                   const when = c.created_at ? new Date(c.created_at).toLocaleString() : ""
@@ -747,7 +743,7 @@ export function TicketDetailPanel({
       </div>
 
       <aside className="w-full shrink-0 lg:w-72 xl:w-80">
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-4">
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm lg:sticky ">
           <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500">
             Details
           </h3>

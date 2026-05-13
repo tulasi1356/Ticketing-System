@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     collection do
       post :create
       get :index
+      get :get_sprint_by_project_id
     end
   end
 
@@ -44,6 +45,9 @@ Rails.application.routes.draw do
       post :create
       get :index
       post :export
+    end
+    member do
+      patch :update
     end
   end
 

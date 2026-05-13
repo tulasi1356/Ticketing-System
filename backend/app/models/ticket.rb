@@ -1,4 +1,6 @@
 class Ticket < ApplicationRecord
+  include BumpsProjectBoardCache
+
   belongs_to :project
   belongs_to :sprint
   belongs_to :assignee, class_name: "User"

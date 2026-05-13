@@ -9,6 +9,7 @@ import { FormInput } from "../../components/form/formInput"
 import { DatePicker } from "../../components/ui/datePicker"
 import { Drawer } from "../../components/ui/sidebar"
 import { useCreateSprint } from "../../hooks/sprints/useCreateSprint"
+import { toast } from "sonner"
 
 const sprintFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -114,16 +115,17 @@ export default function AddSprint({
       const id = created?.id as number | undefined
       if (id != null) onSprintCreated?.(id)
       setOpen(false)
-      methods.reset({
-        name: "",
-        description: "",
-        startDate: new Date(),
-        endDate: new Date(),
-        projectId,
-      })
+      toast.success("Sprint created")
     } catch (e) {
-      console.error("Could not create sprint:", e)
+      toast.error(e.message)
     }
+    methods.reset({
+      name: "",
+      description: "",
+      startDate: new Date(),
+      endDate: new Date(),
+      projectId,
+    })
   }
 
   return (

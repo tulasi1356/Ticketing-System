@@ -2,7 +2,7 @@ class SprintsController < ApplicationController
 
     before_action :require_current_user
 
-    def create
+def create
         result = Sprints::CreateService.call(current_user: current_user, params: params)
         if result[:ok]
             render json: result[:sprint], status: :created
@@ -20,6 +20,12 @@ class SprintsController < ApplicationController
                 Sprint.where(project_id: current_user.projects.select(:id))
             end
 
+        render json: sprints, status: :ok
+    end
+
+
+    def get_sprint_by_project_id
+        sprints = Sprint.where(project_id: params[:project_id])
         render json: sprints, status: :ok
     end
 

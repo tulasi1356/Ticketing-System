@@ -22,6 +22,17 @@ module Tickets
         return failure(:unprocessable_entity, error: "Assignee must be a member of this project")
       end
 
+      Rails.logger.info("permitted_attrs: #{@permitted_attrs.to_json}")
+
+      sprint_data = Sprint.find_by(id: @permitted_attrs[:sprint_id])
+      if sprint_data.present? && sprint_data.end_date < Date.today
+        return failure(:unprocessable_entity, error: "Sprint is already completed, so you cannot update tickets for it")
+      end
+
+      if sprint_data.present? && sprint_data.start_date > ticket.start_date && sprint_data.end_date < ticket.end_date
+        return failure(:unprocessable_entity, error: "Start date must be after or equal to sprint start date and end date must be before or equal to sprint end date")
+      end
+
       if ticket.update(@permitted_attrs)
         ticket.reload
         { ok: true, ticket: ticket }

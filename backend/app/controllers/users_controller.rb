@@ -1,81 +1,95 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
+  before_action :require_current_user, except: [:create, :find_by_email]
+  before_action :require_admin!, only: [:index, :update, :destroy]
+  before_action :set_user, only: [:update, :destroy]
 
-    before_action :require_current_user, except: [:create, :find_by_email]
-    before_action :require_admin!, only: [:index, :update, :destroy]
+  def index
+    render json: User.all, status: :ok
+  end
 
-    def index
-        users = User.all
-        render json: users, status: :ok
+  def find_by_email
+    user = User.find_by(email: params[:email])
+    if user
+      render json: user, status: :ok
+    else
+      render json: { error: "User not found" }, status: :not_found
+    end
+  end
+
+  def create
+    user = build_user
+    if user.save
+      render json: user, status: :created
+    else
+      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @user.update(user_attributes_for_update)
+      render json: @user, status: :ok
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def search
+    result = Users::SearchService.call(current_user: current_user, params: params)
+    unless result[:ok]
+      render json: result[:body], status: result[:status]
+      return
     end
 
-    def find_by_email
-        user = User.find_by(email: params[:email])
-        if user
-            render json: user, status: :ok
-        else
-            render json: { error: "User not found" }, status: :not_found
-        end
+    render json: result[:users].as_json(only: [:id, :name, :email]), status: :ok
+  end
+
+  def destroy
+    if @user.destroy
+      render json: { message: "User deleted successfully" }, status: :ok
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
-    
-    def create
-        user = User.new(
-            name: params[:name],
-            email: params[:email],
-            password: params[:password],
-            role: resolved_role
-        )
-        if user.save
-            render json: user, status: :created
-        else
-            render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
-        end
-    end
+  end
 
-    def update
-        user = User.find(params[:id])
-        if user.update(name: params[:name], email: params[:email], password: params[:password], role: params[:role])
-            render json: user, status: :ok
-        else
-            render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
-        end
-    end
+  private
 
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    def search
-        result = Users::SearchService.call(current_user: current_user, params: params)
-        unless result[:ok]
-            render json: result[:body], status: result[:status]
-            return
-        end
+  def build_user
+    User.new(user_attributes_for_create)
+  end
 
-        render json: result[:users].as_json(only: [:id, :name, :email]), status: :ok
-    end
+  def user_attributes_for_create
+    params.permit(:name, :email, :password).merge(role: resolved_role)
+  end
 
-    def destroy
-        user = User.find(params[:id])
-        if user.destroy
-            render json: { message: "User deleted successfully" }, status: :ok
-        else
-            render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
-        end
-    end
+  def user_attributes_for_update
+    attrs = params.permit(:name, :email, :password).to_h
+    attrs[:role] = normalize_role(params[:role]) if params.key?(:role)
+    attrs[:role] = :admin if bootstrap_admin_email?(params[:email].to_s.strip.downcase)
+    attrs
+  end
 
-    private
+  # Default :normal. Bootstrap admin emails are always :admin. Otherwise explicit
+  # admin ("admin" or 1) maps to :admin.
+  def resolved_role
+    email = params[:email].to_s.strip.downcase
+    return :admin if bootstrap_admin_email?(email)
 
-    # Default normal (0). Bootstrap admin emails are always admin. Otherwise explicit
-    # admin (1 or "admin") maps to admin (1).
-    def resolved_role
-        email = params[:email].to_s.strip.downcase
-        return :admin if %w[admin@gmail.com admin@yopmail.com].include?(email)
+    normalize_role(params[:role])
+  end
 
-        r = params[:role]
-        return :normal if r.blank?
+  def normalize_role(role_param)
+    return :normal if role_param.blank?
 
-        (r.to_s == "admin" || r.to_i == 1) ? :admin : :normal
-    end
+    (role_param.to_s == "admin" || role_param.to_i == 1) ? :admin : :normal
+  end
 
-    def user_params
-        params.permit(:name, :email, :password)
-    end
-
+  def bootstrap_admin_email?(email)
+    %w[admin@gmail.com admin@yopmail.com].include?(email)
+  end
 end

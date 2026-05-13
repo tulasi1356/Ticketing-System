@@ -33,6 +33,7 @@ import { useGetProject } from "../hooks/projects/useGetProject"
 import type { Project } from "./ticketing/types"
 import { useDeleteProject } from "../hooks/projects/useDeleteProject"
 import { router } from "../router"
+import { toast } from "sonner"
 
 const projectFormSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -115,8 +116,9 @@ export function CreateOrEditProject({ isEdit = false, projectId, onClose }: Crea
             methods.reset()
             setCreateSelectedUserIds([])
             setOpen(false)
+            toast.success("Project created")
         } catch (e) {
-            console.error("Error creating project:", e)
+            toast.error(e.message)
         }
     }
 
@@ -195,9 +197,9 @@ export default function AllProjects() {
     const handleDeleteProject = async (id: number) => {
         try {
             await deleteProject(id)
+            toast.success("Project deleted")
         } catch (e) {
-            console.error("Error deleting project:", e)
-            // toast.error("Error deleting project")
+            toast.error(e.message)
         }
     }
     

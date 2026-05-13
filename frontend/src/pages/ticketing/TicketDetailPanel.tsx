@@ -24,6 +24,7 @@ import { useGetComments } from "../../hooks/comments/useGetComments"
 import { useUpdateTicket } from "../../hooks/tickets/useUpdateTicket"
 import { cn } from "../../lib/utils"
 import type { ProjectUser, Ticket } from "./types"
+import { useGetSprintByProjectId } from "../../hooks/sprints/useGetSprintByProjectId"
 
 const MAX_UPLOAD_HINT = "15 MB"
 
@@ -200,6 +201,8 @@ export function TicketDetailPanel({
   const { data: comments, isLoading: loadingComments, isError: commentsError } = useGetComments(
     ticket.id
   )
+  const {data: sprintsForTicketProject, isLoading: loadingSprintsForTicketProject, isError: sprintsErrorForTicketProject} = useGetSprintByProjectId(ticket.project_id ?? 0 as number)
+  console.log(sprintsForTicketProject)
 
   const [editing, setEditing] = useState(false)
   const [draftTitle, setDraftTitle] = useState(ticket.title)
@@ -212,6 +215,7 @@ export function TicketDetailPanel({
   )
   const [draftStartDate, setDraftStartDate] = useState(() => toInputDate(ticket.start_date))
   const [draftEndDate, setDraftEndDate] = useState(() => toInputDate(ticket.end_date))
+  const [draftSprintId, setDraftSprintId] = useState<number | null>(ticket.sprint_id ?? null)
   const [draftAttachments, setDraftAttachments] = useState<string[]>(() =>
     normalizeAttachmentUrls(ticket.attachment_urls)
   )
@@ -222,6 +226,7 @@ export function TicketDetailPanel({
   const [commentAttachments, setCommentAttachments] = useState<string[]>([])
   const [commentNewUrl, setCommentNewUrl] = useState("")
   const [commentUploadBusy, setCommentUploadBusy] = useState(false)
+
   // const { busy: exportBusy, run: runAdminExport } = useAdminTicketExport()
 
   useEffect(() => {
@@ -234,6 +239,7 @@ export function TicketDetailPanel({
     setDraftAssigneeId(ticket.assignee?.id ?? null)
     setDraftStartDate(toInputDate(ticket.start_date))
     setDraftEndDate(toInputDate(ticket.end_date))
+    setDraftSprintId(ticket.sprint_id ?? null)
     setDraftAttachments(normalizeAttachmentUrls(ticket.attachment_urls))
     setNewAttachmentUrl("")
   }, [ticket, editing])
@@ -267,6 +273,7 @@ export function TicketDetailPanel({
     setDraftAssigneeId(ticket.assignee?.id ?? null)
     setDraftStartDate(toInputDate(ticket.start_date))
     setDraftEndDate(toInputDate(ticket.end_date))
+    setDraftSprintId(ticket.sprint_id ?? null)
     setDraftAttachments(normalizeAttachmentUrls(ticket.attachment_urls))
     setNewAttachmentUrl("")
     setEditing(true)
@@ -332,6 +339,10 @@ export function TicketDetailPanel({
       toast.error("Start date cannot be after end date")
       return
     }
+    if (draftSprintId == null) {
+      toast.error("Choose a sprint")
+      return
+    }
 
     try {
       await saveTicket({
@@ -345,13 +356,14 @@ export function TicketDetailPanel({
           assignee_id: draftAssigneeId,
           start_date: draftStartDate,
           end_date: draftEndDate,
+          sprint_id: draftSprintId,
           attachment_urls: draftAttachments,
         },
       })
       toast.success("Ticket saved")
       setEditing(false)
-    } catch {
-      toast.error("Could not save ticket")
+    } catch(e) {
+      toast.error(e.message)
     }
   }
 
@@ -834,7 +846,27 @@ export function TicketDetailPanel({
                 ticket.end_date ? new Date(ticket.end_date).toLocaleDateString() : "Not set"
               )}
             </SidebarRow>
-            {sprintName ? <SidebarRow label="Sprint">{sprintName}</SidebarRow> : null}
+            {sprintName ? <SidebarRow label="Sprint">
+              {editing ? (
+                loadingSprintsForTicketProject ? (
+                  <p className="text-sm text-gray-500">Loading sprints…</p>
+                ) : sprintsErrorForTicketProject ? (
+                  <p className="text-sm text-red-600">Could not load sprints.</p>
+                ) : sprintsForTicketProject?.length > 0 ? (
+                  <Select
+                    items={sprintsForTicketProject.map((s) => ({ label: s.name, value: s.id }))}
+                    value={draftSprintId ?? undefined}
+                    onChange={(v) => setDraftSprintId(Number(v))}
+                    placeholder="Select sprint"
+                    className="w-full"
+                  />
+                ) : (
+                  <p className="text-sm text-gray-500">No sprints found.</p>
+                )
+              ) : (
+                sprintName
+              )}
+            </SidebarRow> : null}
             {projectName ? <SidebarRow label="Project">{projectName}</SidebarRow> : null}
           </div>
         </div>

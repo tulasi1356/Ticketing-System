@@ -71,6 +71,7 @@ class TicketsController < ApplicationController
             :priority,
             :issue_type,
             :assignee_id,
+            :sprint_id,
             :start_date,
             :end_date,
             attachment_urls: []

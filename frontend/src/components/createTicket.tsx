@@ -267,11 +267,11 @@ export function CreateTicket({
         try {
             await createTicket(payload)
             setOpen(false)
-            methods.reset(emptyDefaults())
+            toast.success("Ticket created")
         } catch (e) {
-            console.error("Could not create ticket:", e)
             toast.error(e.message)
         }
+        methods.reset(emptyDefaults())
     }
 
 

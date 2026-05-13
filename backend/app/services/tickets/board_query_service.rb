@@ -16,7 +16,9 @@ module Tickets
       return relation if relation[:ok] == false
 
       rel = relation[:relation]
-      { ok: true, relation: rel, stats: stats_for(rel) }
+      project_id = @params[:project_id].presence&.to_i
+      stats = cached_stats_for(rel, project_id)
+      { ok: true, relation: rel, stats: stats }
     end
 
     private
@@ -94,6 +96,36 @@ module Tickets
       end
 
       scope
+    end
+
+
+    # Caches only the small stats hash (4 counts), NOT the ticket rows.
+    # - ticket_board_stats_gen/{id} holds ONE number; bumps invalidate all stats keys for that project.
+    # - fetch key ["ticket_board_stats", ...] stores the hash { total:, todo:, done:, high_priority: }.
+    def cached_stats_for(relation, project_id)
+      gen = Rails.cache.read(Ticket.board_stats_generation_cache_key(project_id)) || 0
+      filters = board_stats_filters_key
+      Rails.cache.fetch(["ticket_board_stats", project_id, gen, filters], expires_in: 5.minutes) do
+        stats_for(relation)
+      end
+    end
+
+    
+    def board_stats_filters_key
+      prio = enum_tokens_param(@params[:priorities], Ticket.priorities.keys).sort.join(",")
+      stat = enum_tokens_param(@params[:statuses], Ticket.statuses.keys).sort.join(",")
+      assigns = integer_list_param(@params[:assignee_ids]).sort.join(",")
+      [
+        (@params[:board_view].presence || "sprint"),
+        @params[:sprint_id].to_s,
+        @params[:q].to_s.downcase.strip,
+        prio,
+        stat,
+        assigns,
+        @params[:date_from].to_s,
+        @params[:date_to].to_s,
+        @current_user.id
+      ].join("|")
     end
 
     def stats_for(relation)

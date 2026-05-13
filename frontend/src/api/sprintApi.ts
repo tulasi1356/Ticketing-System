@@ -8,3 +8,7 @@ export const createSprint = (data: any) => apiClient("/sprints", {
 export const getSprints = () => apiClient("/sprints", {
     method: "GET",
 })
+
+export const getSprintByProjectId = (projectId: number) => apiClient(`/sprints/get_sprint_by_project_id?project_id=${projectId}`, {
+    method: "GET",
+})

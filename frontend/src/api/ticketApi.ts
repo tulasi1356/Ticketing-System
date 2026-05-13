@@ -130,6 +130,7 @@ export type UpdateTicketPayload = {
   assignee_id?: number
   start_date?: string | null
   end_date?: string | null
+  sprint_id?: number | null
   attachment_urls?: string[]
 }
 

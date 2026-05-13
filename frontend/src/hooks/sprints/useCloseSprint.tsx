@@ -8,7 +8,7 @@ export const useCloseSprint = () => {
     return useMutation({
         mutationFn: closeSprint,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["sprints", "board"] })
+            queryClient.invalidateQueries({ queryKey: ["sprints"] })
         }
     })
 }

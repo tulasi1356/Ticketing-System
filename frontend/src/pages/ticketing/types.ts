@@ -16,6 +16,7 @@ export type Sprint = {
   name: string
   project_id: number
   status?: string
+  end_date?: string | null
 }
 
 export type TicketAssignee = { id: number; name: string; email?: string }

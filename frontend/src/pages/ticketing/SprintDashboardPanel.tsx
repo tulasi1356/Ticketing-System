@@ -4,7 +4,7 @@ import { CreateTicket } from "../../components/createTicket"
 import { TicketDetailPanel } from "./TicketDetailPanel"
 import { TicketListItem } from "./TicketListItem"
 import type { BoardView, Project, Sprint } from "./types"
-import { formatTicketKey } from "./utils"
+import { formatTicketKey, compareSprintEndDateToToday } from "./utils"
 import { Badge } from "../../components/ui/badge"
 import { Button } from "../../components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
@@ -246,14 +246,17 @@ export function SprintDashboardPanel({
               triggerLabel="+ Create Ticket"
             />
           )}
-          <Button type="button"
-              variant="secondary"
-              size="md"
-              // onClick={() => setSelectedTicketId(null)}
-              onClick={closeSprintDashboard}
-            >
-              Close Sprint
-          </Button>
+          {selectedSprint &&
+            selectedSprint.status !== "completed" &&
+            compareSprintEndDateToToday(selectedSprint.end_date) && (
+            <Button type="button"
+                variant="secondary"
+                size="md" 
+                onClick={closeSprintDashboard}
+                >
+                  Close Sprint
+              </Button>
+          )}
         </div>
       </header>
 

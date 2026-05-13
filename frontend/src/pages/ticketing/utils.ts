@@ -15,6 +15,30 @@ export function formatTicketKey(projectName: string, ticketId: number): string {
   return `${projectKey(projectName)}-${ticketId}`
 }
 
+export function compareSprintEndDateToToday(
+  endDate: string | Date | null | undefined
+): boolean {
+  if (endDate == null || endDate === "") return false
+
+  const startOfLocalDay = (d: Date) =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate())
+
+  let end: Date
+  if (endDate instanceof Date) {
+    end = startOfLocalDay(endDate)
+  } else if (/^\d{4}-\d{2}-\d{2}$/.test(endDate)) {
+    const [y, m, d] = endDate.split("-").map(Number)
+    end = new Date(y, m - 1, d)
+  } else {
+    const parsed = new Date(endDate)
+    if (Number.isNaN(parsed.getTime())) return false
+    end = startOfLocalDay(parsed)
+  }
+
+  const today = startOfLocalDay(new Date())
+  return end.getTime() <= today.getTime()
+}
+
 export function sprintStatusUi(status?: string): { label: string; dotClass: string } {
   switch (status) {
     case "active":

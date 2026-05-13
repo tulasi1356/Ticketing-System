@@ -11,7 +11,8 @@ import Home from './pages/home/home-page'
 import SignUp from './pages/auth/sign-up-page'
 import Login from './pages/auth/login-page'
 import { useAuthStore } from './stores/authStore'
-import AllProjects from './pages/projects/list'
+import AdminProjects from "./pages/projects/admin-projects-page"
+import MyProjects from "./pages/projects/my-projects-page"
 import { SprintBoardPage } from './pages/board/sprint-board-page'
 import { Navbar } from './components/navbar'
 
@@ -79,10 +80,22 @@ const allUsersRoute = createRoute({
     },
 })
 
-const allProjectsRoute = createRoute({
-    getParentRoute: () => rootRoute,
-    path: '/projects/all',
-    component: AllProjects,
+const adminProjectsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/projects/all",
+  component: AdminProjects,
+  beforeLoad: () => {
+    const current = useAuthStore.getState().user
+    if (current?.role !== "admin") {
+      throw redirect({ to: "/projects/mine" })
+    }
+  },
+})
+
+const myProjectsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/projects/mine",
+  component: MyProjects,
 })
 
 const ticketsDetailRoute = createRoute({
@@ -102,7 +115,8 @@ const routeTree = rootRoute.addChildren([
     loginRoute,
     signUpRoute,
     allUsersRoute,
-    allProjectsRoute,
+    adminProjectsRoute,
+    myProjectsRoute,
     ticketsDetailRoute,
     ticketsBoardRoute,
 ])

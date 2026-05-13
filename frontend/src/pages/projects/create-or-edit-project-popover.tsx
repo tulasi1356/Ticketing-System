@@ -7,7 +7,7 @@ import { toast } from "sonner"
 import { Button } from "../../components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover"
 import { ProjectFormFields } from "./project-form-fields"
-import { UserMultiSelect } from "../../components/UserMultiSelect"
+import { UserMultiSelect } from "../../components/user-multi-select"
 import { useAssignUsersToProject } from "../../hooks/projects/useAssignUsersToProject"
 import { useCreateProject } from "../../hooks/projects/useCreateProject"
 import { useEditProject } from "../../hooks/projects/useEditProject"
@@ -32,7 +32,7 @@ export function CreateOrEditProjectPopover({
   const [open, setOpen] = useState(false)
   const user = useAuthStore((s) => s.user)
   const isAdmin = user?.role === "admin"
-  const methods = useForm<ProjectFormValues>({
+  const projectForm = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: {
       name: "",
@@ -52,20 +52,20 @@ export function CreateOrEditProjectPopover({
     if (!project) return
 
     const selectedIds = (project.users ?? []).map((u: ProjectListUser) => u.id)
-    methods.reset({
+    projectForm.reset({
       name: project.name ?? "",
       description: project.description ?? "",
       user_ids: selectedIds,
     })
     setCreateSelectedUserIds(selectedIds)
-  }, [isEdit, open, project, methods])
+  }, [isEdit, open, project, projectForm])
 
   useEffect(() => {
     if (isEdit) return
     if (!open) return
-    methods.reset({ name: "", description: "", user_ids: [] })
+    projectForm.reset({ name: "", description: "", user_ids: [] })
     setCreateSelectedUserIds([])
-  }, [isEdit, open, methods])
+  }, [isEdit, open, projectForm])
 
   const handleSubmit = async (data: ProjectFormValues) => {
     try {
@@ -77,7 +77,7 @@ export function CreateOrEditProjectPopover({
           user_ids: createSelectedUserIds.map(Number),
         })
       }
-      methods.reset()
+      projectForm.reset()
       setCreateSelectedUserIds([])
       setOpen(false)
       toast.success("Project created")
@@ -105,7 +105,7 @@ export function CreateOrEditProjectPopover({
           user_ids: createSelectedUserIds.map(Number),
         })
       }
-      methods.reset()
+      projectForm.reset()
       setCreateSelectedUserIds([])
       setOpen(false)
       onClose()
@@ -147,13 +147,13 @@ export function CreateOrEditProjectPopover({
         collisionPadding={24}
         className="flex max-h-[min(560px,calc(100dvh-2rem))] flex-col gap-0 overflow-hidden p-0"
       >
-        <FormProvider {...methods}>
+        <FormProvider {...projectForm}>
           <form
             className="flex min-h-0 flex-1 flex-col"
             onSubmit={
               isEdit
-                ? methods.handleSubmit(handleEditSubmit)
-                : methods.handleSubmit(handleSubmit)
+                ? projectForm.handleSubmit(handleEditSubmit)
+                : projectForm.handleSubmit(handleSubmit)
             }
           >
             <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 pb-3">

@@ -248,7 +248,7 @@ export function CreateTicket({
         attachments: [],
     })
 
-    const methods = useForm<TicketFormValues>({
+    const ticketForm = useForm<TicketFormValues>({
         resolver: zodResolver(ticketFormSchema),
         defaultValues: emptyDefaults(),
     })
@@ -256,7 +256,7 @@ export function CreateTicket({
     const { mutateAsync: createTicket } = useCreateTicket()
 
     useEffect(() => {
-        methods.reset(emptyDefaults())
+        ticketForm.reset(emptyDefaults())
     }, [projectId, sprintId])
 
     const handleSubmit = async (data: TicketFormValues) => {
@@ -279,7 +279,7 @@ export function CreateTicket({
         } catch (e) {
             toast.error(e instanceof Error ? e.message : "Could not create ticket")
         }
-        methods.reset(emptyDefaults())
+        ticketForm.reset(emptyDefaults())
     }
 
 
@@ -301,11 +301,11 @@ export function CreateTicket({
                         <h2 className="text-lg font-semibold text-gray-900">Create ticket</h2>
                     </div>
                     <div className="min-h-0 flex-1 overflow-y-auto p-4">
-                        <FormProvider {...methods}>
+                        <FormProvider {...ticketForm}>
                             <form
                                 id="create-ticket-form"
                                 className="flex flex-col gap-4"
-                                onSubmit={methods.handleSubmit(handleSubmit)}
+                                onSubmit={ticketForm.handleSubmit(handleSubmit)}
                             >
                                 <CreateTicketFields
                                     sprintName={sprintName}

@@ -51,7 +51,8 @@ export default function LoginPage() {
   const loginSchema = useMemo(() => createLoginSchema(t), [t])
   const setUser = useAuthStore((s) => s.setUser)
 
-  const methods = useForm<LoginFormValues>({
+  const loginForm = useForm<LoginFormValues>({
+    mode: "onChange",
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -60,8 +61,7 @@ export default function LoginPage() {
   })
 
   const navigate = useNavigate()
-  const isSubmitting = methods.formState.isSubmitting
-  const canSubmit = useMemo(() => !isSubmitting, [isSubmitting])
+  const { isValid, isSubmitting } = loginForm.formState
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
@@ -86,8 +86,8 @@ export default function LoginPage() {
           <CardDescription>{t("auth.login.description")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
+          <FormProvider {...loginForm}>
+            <form onSubmit={loginForm.handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
               <LoginFields />
               <Button
                 id="login-button"
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 size="lg"
                 variant="primary"
                 type="submit"
-                disabled={!canSubmit}
+                disabled={!isValid || isSubmitting}
               >
                 {isSubmitting ? t("auth.login.submitting") : t("auth.login.submit")}
               </Button>

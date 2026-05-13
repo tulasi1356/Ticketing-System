@@ -63,6 +63,7 @@ export default function SignUpPage() {
   const navigate = useNavigate()
 
   const signUpForm = useForm<SignUpFormValues>({
+    mode: "onChange",
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
@@ -124,7 +125,7 @@ export default function SignUpPage() {
 function SignUpButton() {
   const { t } = useTranslation()
   const signUpForm = useFormContext<SignUpFormValues>()
-  const { isSubmitting } = useFormState({ control: signUpForm.control })
+  const { isValid, isSubmitting } = useFormState({ control: signUpForm.control })
 
   return (
     <Button
@@ -133,6 +134,7 @@ function SignUpButton() {
       size="lg"
       variant="primary"
       type="submit"
+      disabled={!isValid || isSubmitting}
     >
       {isSubmitting ? t("auth.signUp.submitting") : t("auth.signUp.submit")}
     </Button>

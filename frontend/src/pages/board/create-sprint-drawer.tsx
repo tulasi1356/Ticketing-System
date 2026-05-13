@@ -77,7 +77,7 @@ export default function CreateSprintDrawer({
   const queryClient = useQueryClient()
   const { mutateAsync: createSprint } = useCreateSprint()
 
-  const methods = useForm<SprintFormValues>({
+  const sprintForm = useForm<SprintFormValues>({
     resolver: zodResolver(sprintFormSchema),
     defaultValues: {
       name: "",
@@ -89,8 +89,8 @@ export default function CreateSprintDrawer({
   })
 
   useEffect(() => {
-    methods.setValue("projectId", projectId, { shouldValidate: true, shouldDirty: false })
-  }, [projectId, methods])
+    sprintForm.setValue("projectId", projectId, { shouldValidate: true, shouldDirty: false })
+  }, [projectId, sprintForm])
 
   const handleSubmit = async (data: SprintFormValues) => {
     try {
@@ -109,7 +109,7 @@ export default function CreateSprintDrawer({
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not create sprint")
     }
-    methods.reset({
+    sprintForm.reset({
       name: "",
       description: "",
       startDate: new Date(),
@@ -143,11 +143,11 @@ export default function CreateSprintDrawer({
           </div>
 
           <div className="min-h-0 flex-1 overflow-y-auto p-4">
-            <FormProvider {...methods}>
+            <FormProvider {...sprintForm}>
               <form
                 id={formId}
                 className="flex flex-col gap-4"
-                onSubmit={methods.handleSubmit(handleSubmit)}
+                onSubmit={sprintForm.handleSubmit(handleSubmit)}
               >
                 <CreateSprintFields projectName={projectName} />
               </form>

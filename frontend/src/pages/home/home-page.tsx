@@ -88,7 +88,7 @@ export default function HomePage() {
                 </li>
                 <li>
                   <Link
-                    to="/projects/all"
+                    to={isAdmin ? "/projects/all" : "/projects/mine"}
                     className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition hover:border-blue-200 hover:bg-blue-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                   >
                     <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">

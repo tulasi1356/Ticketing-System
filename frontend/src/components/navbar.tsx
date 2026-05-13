@@ -44,7 +44,7 @@ export function Navbar() {
                   </Link>
                 </>
               ) : (
-                <Link  to="/projects/all" id = "my-projects-link" aria-label={t("nav.myProjectsAria")} className="hover:underline">
+                <Link  to="/projects/mine" id = "my-projects-link" aria-label={t("nav.myProjectsAria")} className="hover:underline">
                   {t("nav.myProjects")}
                 </Link>
               )}

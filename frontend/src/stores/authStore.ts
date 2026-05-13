@@ -6,9 +6,9 @@ const USER_SESSION_KEY = "user"
 
 function readStoredUser(): User | null {
     try {
-        const raw = sessionStorage.getItem(USER_SESSION_KEY)
-        if (!raw) return null
-        return JSON.parse(raw) as User
+        const userString   = sessionStorage.getItem(USER_SESSION_KEY)
+        if (!userString) return null
+        return JSON.parse(userString) as User
     } catch {
         return null
     }

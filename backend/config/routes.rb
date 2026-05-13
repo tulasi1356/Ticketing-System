@@ -31,12 +31,9 @@ Rails.application.routes.draw do
   end
 
 
-  resources :sprints do
-    collection do
-      post :create
-      get :index
-      get :get_sprint_by_project_id
-      post "close/:sprint_id", action: :close, as: :close_sprint
+  resources :sprints, only: [:index, :create] do
+    member do
+      post :close
     end
   end
 

@@ -5,7 +5,7 @@ class TicketsController < ApplicationController
     before_action :require_admin!, only: [:export]
 
     def create
-        result = Tickets::CreateService.call(current_user: current_user, params: params)
+        result = Tickets::CreateService.call(params: params)
         if result[:ok]
             ticket = result[:ticket]
             render json: TicketBlueprint.render_as_hash(ticket, view: :detail), status: :created
@@ -16,7 +16,6 @@ class TicketsController < ApplicationController
 
     def update
         result = Tickets::UpdateService.call(
-            current_user: current_user,
             ticket_id: params[:id],
             permitted_attrs: ticket_update_params
         )
@@ -29,7 +28,7 @@ class TicketsController < ApplicationController
     end
 
     def index
-        result = Tickets::BoardQueryService.call(current_user: current_user, params: params)
+        result = Tickets::BoardQueryService.call(params: params)
         unless result[:ok]
             render json: result[:body], status: result[:status]
             return
@@ -39,7 +38,7 @@ class TicketsController < ApplicationController
         page = 1 if page.nil? || page < 1
 
         Rails.logger.info("result[:relation]: #{result[:relation].to_sql}")
-        
+
         @pagy, records = pagy(:offset, result[:relation], page: page, limit: 8)
 
         render json: {

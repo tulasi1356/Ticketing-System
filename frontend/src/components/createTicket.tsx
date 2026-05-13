@@ -7,9 +7,17 @@ import { FormInput } from "./form/formInput"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Drawer } from "./ui/sidebar"
 import { Select } from "./ui/select"
-import { ticketFormSchema } from "../types/ticket"
+import { ticketFormSchema } from "../schemas/ticketFormSchema"
 import type z from "zod"
 import type { User } from "../types/user"
+import {
+  TICKET_ISSUE_TYPE_SELECT_OPTIONS,
+  TICKET_PRIORITY_SELECT_OPTIONS,
+  TICKET_STATUS_SELECT_OPTIONS,
+  type TicketIssueType,
+  type TicketPriority,
+  type TicketStatus,
+} from "../constants/domain-enums"
 import { searchUsers } from "../api/userApi"
 import { useCreateTicket } from "../hooks/tickets/useCreateTicket"
 import { DatePicker } from "./ui/datePicker"
@@ -51,7 +59,7 @@ function CreateTicketFields({
     }, [drawerOpen])
 
     useEffect(() => {
-        if (assigneeId == null) setAssigneePicked(null)
+        if (assigneeId == null || assigneeId < 1) setAssigneePicked(null)
     }, [assigneeId])
 
     useEffect(() => {
@@ -70,19 +78,19 @@ function CreateTicketFields({
     }, [assigneeQuery, projectId])
 
     const handleStatusChange = (value: string) => {
-        setValue("status", value as "todo" | "in_progress" | "test" | "done", {
+        setValue("status", value as TicketStatus, {
             shouldDirty: true,
             shouldValidate: true,
         })
     }
     const handleIssueTypeChange = (value: string) => {
-        setValue("issueType", value as "bug" | "feature" | "task", {
+        setValue("issueType", value as TicketIssueType, {
             shouldDirty: true,
             shouldValidate: true,
         })
     }
     const handlePriorityChange = (value: string) => {
-        setValue("priority", value as "low" | "medium" | "high", {
+        setValue("priority", value as TicketPriority, {
             shouldDirty: true,
             shouldValidate: true,
         })
@@ -104,7 +112,7 @@ function CreateTicketFields({
     }
 
     const clearAssignee = () => {
-        setValue("assigneeId", undefined, { shouldDirty: true, shouldValidate: true })
+        setValue("assigneeId", 0, { shouldDirty: true, shouldValidate: true })
         setAssigneePicked(null)
         setAssigneeQuery("")
         setAssigneeHits([])
@@ -114,9 +122,9 @@ function CreateTicketFields({
         <>
             <FormInput name="title" control={control} label="Title" placeholder="Title" />
             <FormInput name="description" control={control} label="Description" placeholder="Description"  type="textarea"/>
-            <Select label="Status" items={[{ label: "Todo", value: "todo" }, { label: "In Progress", value: "in_progress" }, { label: "Test", value: "test" }, { label: "Done", value: "done" }]} value={status} onChange={handleStatusChange} placeholder="Status" />
-            <Select label="Issue Type" items={[{ label: "Bug", value: "bug" }, { label: "Feature", value: "feature" }, { label: "Task", value: "task" }]} value={issueType} onChange={handleIssueTypeChange} placeholder="Issue Type" />
-            <Select label="Priority" items={[{ label: "Low", value: "low" }, { label: "Medium", value: "medium" }, { label: "High", value: "high" }]} value={priority} onChange={handlePriorityChange} placeholder="Priority" />
+            <Select label="Status" items={TICKET_STATUS_SELECT_OPTIONS} value={status} onChange={handleStatusChange} placeholder="Status" />
+            <Select label="Issue Type" items={TICKET_ISSUE_TYPE_SELECT_OPTIONS} value={issueType} onChange={handleIssueTypeChange} placeholder="Issue Type" />
+            <Select label="Priority" items={TICKET_PRIORITY_SELECT_OPTIONS} value={priority} onChange={handlePriorityChange} placeholder="Priority" />
             {/* start date */}
             <div className="flex flex-col gap-1">
                 <span className="text-sm font-medium text-gray-700">Start Date</span>
@@ -232,7 +240,7 @@ export function CreateTicket({
         description: "",
         projectId,
         sprintId,
-        assigneeId: undefined,
+        assigneeId: 0,
         status: "todo",
         issueType: "task",
         priority: "medium",
@@ -262,14 +270,14 @@ export function CreateTicket({
             end_date: data.endDate,
             project_id: data.projectId,
             sprint_id: data.sprintId,
-            assignee_id: data.assigneeId!,
+            assignee_id: data.assigneeId,
         }
         try {
             await createTicket(payload)
             setOpen(false)
             toast.success("Ticket created")
         } catch (e) {
-            toast.error(e.message)
+            toast.error(e instanceof Error ? e.message : "Could not create ticket")
         }
         methods.reset(emptyDefaults())
     }

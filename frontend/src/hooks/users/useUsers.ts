@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "../../api/userApi";
 
-export const useUsers = (enabled = true) => {
+export const useUsers = () => {
   return useQuery({
     queryKey: ["users"],
     queryFn: getUsers,
-    enabled,
   });
 };

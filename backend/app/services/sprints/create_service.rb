@@ -2,28 +2,18 @@
 
 module Sprints
   class CreateService
-    def self.call(current_user:, params:)
-      new(current_user: current_user, params: params).call
+    def self.call(params:)
+      new(params: params).call
     end
 
-    def initialize(current_user:, params:)
-      @current_user = current_user
+    def initialize(params:)
       @params = params
     end
 
     def call
       permitted = @params.permit(:name, :start_date, :end_date, :project_id)
-      if permitted[:start_date].to_date < Date.today
-        return failure(:unprocessable_entity, error: "Start date must be in the future")
-      end
-
-      if permitted[:end_date].to_date < Date.today
-        return failure(:unprocessable_entity, error: "End date must be in the future")
-      end
-
-      project = Project.find_by(id: permitted[:project_id])
-      return failure(:not_found, error: "Project not found") if project.nil?
-      return failure(:forbidden, error: "Forbidden") unless @current_user.admin? || @current_user.projects.exists?(id: project.id)
+      validated = CreateValidator.call(permitted: permitted)
+      return validated unless validated[:ok]
 
       sprint = Sprint.new(permitted)
       sprint.status = derived_status(sprint)

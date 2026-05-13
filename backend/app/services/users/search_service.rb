@@ -2,21 +2,19 @@
 
 module Users
   class SearchService
-    def self.call(current_user:, params:)
-      new(current_user: current_user, params: params).call
+    def self.call(params:)
+      new(params: params).call
     end
 
-    def initialize(current_user:, params:)
-      @current_user = current_user
+    def initialize(params:)
       @params = params
     end
 
     def call
-      query = @params[:query]
+      validated = SearchValidator.call(params: @params)
+      return validated unless validated[:ok]
 
-      if @params[:project_id].blank? && !@current_user.admin?
-        return failure(:forbidden, error: "Forbidden")
-      end
+      query = @params[:query]
 
       es_query =
         if query.present?
@@ -41,12 +39,6 @@ module Users
       scoped_query =
         if @params[:project_id].present?
           project = Project.find_by(id: @params[:project_id])
-          return failure(:not_found, error: "Project not found") unless project
-
-          unless @current_user.admin? || @current_user.projects.exists?(id: project.id)
-            return failure(:forbidden, error: "Forbidden")
-          end
-
           member_ids = project.users.ids.map(&:to_s)
           return { ok: true, users: [] } if member_ids.empty?
 
@@ -63,12 +55,6 @@ module Users
       response = User.search(query: scoped_query)
       users = response.records.to_a
       { ok: true, users: users }
-    end
-
-    private
-
-    def failure(status, error:)
-      { ok: false, status: status, body: { error: error } }
     end
   end
 end

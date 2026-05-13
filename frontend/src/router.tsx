@@ -6,13 +6,13 @@ import {
     createRouter,
     redirect,
 } from '@tanstack/react-router'
-import AllUsers from './pages/UsersPage'
-import Home from './pages/HomePage'
-import SignUp from './pages/SignUpPage'
-import Login from './pages/LoginPage'
+import AllUsers from './pages/users/list'
+import Home from './pages/home/home-page'
+import SignUp from './pages/auth/sign-up-page'
+import Login from './pages/auth/login-page'
 import { useAuthStore } from './stores/authStore'
-import AllProjects from './pages/ProjectsPage'
-import { TicketingSystem } from './pages/ticketing/TicketingSystem'
+import AllProjects from './pages/projects/list'
+import { SprintBoardPage } from './pages/board/sprint-board-page'
 import { Navbar } from './components/navbar'
 
 const rootRoute = createRootRoute({
@@ -22,20 +22,17 @@ const rootRoute = createRootRoute({
     beforeLoad: ({ location }) => {
         const user = useAuthStore.getState().user
         const path = location.pathname
-    
+
         const isAuthPage = path === "/login" || path === "/signup"
-    
-        // 🚫 Not logged in → block protected pages
+
         if (!user && !isAuthPage) {
-          throw redirect({ to: "/signup" })
-        }
-    
-        // 🚫 Logged in → block login/signup
-        if (user && isAuthPage) {
-          throw redirect({ to: "/ticketing_system" })
+            throw redirect({ to: "/signup" })
         }
 
-      },
+        if (user && isAuthPage) {
+            throw redirect({ to: "/tickets" })
+        }
+    },
 })
 
 
@@ -44,15 +41,8 @@ const rootRoute = createRootRoute({
 function RootLayout() {
     return (
         <div className="flex min-h-screen flex-col">
-            <a className="skip-to-main" href="#main-content">
-                Skip to main content
-            </a>
             <Navbar />
-            <main
-                id="main-content"
-                tabIndex={-1}
-                className="flex min-h-0 flex-1 flex-col outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--app-focus-ring-color)]"
-            >
+            <main className="flex min-h-0 flex-1 flex-col">
                 <Outlet />
             </main>
         </div>
@@ -79,30 +69,42 @@ const loginRoute = createRoute({
 
 const allUsersRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/all_users',
+    path: '/users/all',
     component: AllUsers,
+    beforeLoad: () => {
+        const current = useAuthStore.getState().user
+        if (current?.role !== "admin") {
+            throw redirect({ to: "/tickets" })
+        }
+    },
 })
 
 const allProjectsRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/all_projects',
+    path: '/projects/all',
     component: AllProjects,
 })
 
-
-const ticketingSystemRoute = createRoute({
+const ticketsDetailRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/ticketing_system',
-    component: TicketingSystem,
+    path: '/tickets/$ticketId',
+    component: SprintBoardPage,
+})
+
+const ticketsBoardRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/tickets',
+    component: SprintBoardPage,
 })
 
 const routeTree = rootRoute.addChildren([
     indexRoute,
     loginRoute,
     signUpRoute,
-    allUsersRoute,  
+    allUsersRoute,
     allProjectsRoute,
-    ticketingSystemRoute
+    ticketsDetailRoute,
+    ticketsBoardRoute,
 ])
 
 export const router = createRouter({ routeTree })

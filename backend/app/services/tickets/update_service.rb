@@ -2,36 +2,21 @@
 
 module Tickets
   class UpdateService
-    def self.call(current_user:, ticket_id:, permitted_attrs:)
-      new(current_user: current_user, ticket_id: ticket_id, permitted_attrs: permitted_attrs).call
+    def self.call(ticket_id:, permitted_attrs:)
+      new(ticket_id: ticket_id, permitted_attrs: permitted_attrs).call
     end
 
-    def initialize(current_user:, ticket_id:, permitted_attrs:)
-      @current_user = current_user
+    def initialize(ticket_id:, permitted_attrs:)
       @ticket_id = ticket_id
       @permitted_attrs = permitted_attrs
     end
 
     def call
       ticket = Ticket.find_by(id: @ticket_id)
-      return failure(:not_found, error: "Ticket not found") if ticket.nil?
-      return failure(:forbidden, error: "Forbidden") unless @current_user.admin? || @current_user.projects.exists?(id: ticket.project_id)
-
-      assignee_id = @permitted_attrs[:assignee_id]
-      if assignee_id.present? && !ticket.project.users.exists?(id: assignee_id)
-        return failure(:unprocessable_entity, error: "Assignee must be a member of this project")
-      end
+      validated = PersistValidator.call_update(ticket: ticket, permitted_attrs: @permitted_attrs)
+      return validated unless validated[:ok]
 
       Rails.logger.info("permitted_attrs: #{@permitted_attrs.to_json}")
-
-      sprint_data = Sprint.find_by(id: @permitted_attrs[:sprint_id])
-      if sprint_data.present? && sprint_data.end_date < Date.today
-        return failure(:unprocessable_entity, error: "Sprint is already completed, so you cannot update tickets for it")
-      end
-
-      if sprint_data.present? && sprint_data.start_date > ticket.start_date && sprint_data.end_date < ticket.end_date
-        return failure(:unprocessable_entity, error: "Start date must be after or equal to sprint start date and end date must be before or equal to sprint end date")
-      end
 
       if ticket.update(@permitted_attrs)
         ticket.reload

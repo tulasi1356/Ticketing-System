@@ -36,7 +36,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    result = Users::SearchService.call(current_user: current_user, params: params)
+    result = Users::SearchService.call(params: params)
     unless result[:ok]
       render json: result[:body], status: result[:status]
       return

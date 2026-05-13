@@ -1,5 +1,5 @@
 import { apiClient } from "./client"
-import type { BoardView, Ticket } from "../pages/ticketing/types"
+import type { BoardView, Ticket } from "../types/ticketing"
 
 export const createTicket = (data: unknown) =>
   apiClient("/tickets", {

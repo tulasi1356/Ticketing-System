@@ -1,5 +1,11 @@
 class ApplicationController < ActionController::API
+  before_action :assign_current_user_context
+
   private
+
+  def assign_current_user_context
+    Current.user = current_user
+  end
 
   def current_user
     return @current_user if defined?(@current_user)

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { createComment, type CreateCommentBody } from "../../api/commentsApi"
+import { createComment, type CreateCommentBody } from "../../api/commentApi"
 
 export const useCreateComment = () => {
   const queryClient = useQueryClient()

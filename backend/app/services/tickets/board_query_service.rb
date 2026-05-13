@@ -99,12 +99,11 @@ module Tickets
     end
 
 
-    # Caches only the small stats hash (4 counts), NOT the ticket rows.
-    # - ticket_board_stats_gen/{id} holds ONE number; bumps invalidate all stats keys for that project.
-    # - fetch key ["ticket_board_stats", ...] stores the hash { total:, todo:, done:, high_priority: }.
+    
     def cached_stats_for(relation, project_id)
       gen = Rails.cache.read(Ticket.board_stats_generation_cache_key(project_id)) || 0
       filters = board_stats_filters_key
+      Rails.logger.info("filters: #{filters}")
       Rails.cache.fetch(["ticket_board_stats", project_id, gen, filters], expires_in: 5.minutes) do
         stats_for(relation)
       end
@@ -129,6 +128,7 @@ module Tickets
     end
 
     def stats_for(relation)
+      Rails.logger.info("Entering stats_for")
       {
         total: relation.count,
         todo: relation.where(status: :todo).count,

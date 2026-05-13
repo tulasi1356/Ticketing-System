@@ -29,5 +29,14 @@ def create
         render json: sprints, status: :ok
     end
 
+    def close
+        result = Sprints::CloseService.call(current_user: current_user, sprint_id: params[:sprint_id])
+        if result[:ok]
+            render json: result[:sprint], status: :ok
+        else
+            render json: result[:body], status: result[:status]
+        end
+    end
+
     private
 end

@@ -33,10 +33,15 @@ module Tickets
         return failure(:unprocessable_entity, error: "Assignee must be a member of this project")
       end
 
-
-
+      # sprint validation
       sprint = Sprint.find_by(id: attrs[:sprint_id])
       return failure(:not_found, error: "Sprint not found") if sprint.nil?
+
+      Rails.logger.info("sprint: #{sprint.to_json}")
+
+      if sprint.status == "completed"
+        return failure(:unprocessable_entity, error: "Sprint is already completed, so you cannot create tickets for it")
+      end
 
       if sprint.end_date < Date.today
         return failure(:unprocessable_entity, error: "Sprint is already completed, so you cannot create tickets for it")

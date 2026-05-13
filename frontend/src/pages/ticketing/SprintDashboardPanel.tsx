@@ -13,6 +13,8 @@ import { UserMultiSelect } from "../../components/UserMultiSelect"
 import { useAdminTicketExport } from "../../hooks/useAdminTicketExport"
 import { useTicketsBoardInfinite } from "../../hooks/tickets/useTicketsBoardInfinite"
 import { cn } from "../../lib/utils"
+import { toast } from "sonner"
+import { useCloseSprint } from "../../hooks/sprints/useCloseSprint"
 
 type SprintDashboardPanelProps = {
   selectedProject: Project | undefined
@@ -57,6 +59,7 @@ export function SprintDashboardPanel({
   const [dateTo, setDateTo] = useState("")
   const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
   const { busy: exportBusy, run: runAdminExport } = useAdminTicketExport()
+  const { mutateAsync: closeSprint } = useCloseSprint()
 
   useEffect(() => {
     const t = window.setTimeout(() => setDebouncedSearch(search), 350)
@@ -133,6 +136,17 @@ export function SprintDashboardPanel({
   )
 
   const otherTotalLabel = Math.max(0, statsFromApi.total - statsFromApi.highPriority)
+
+
+  const closeSprintDashboard = async () => {
+    try {
+      if (!selectedSprintId) return
+      await closeSprint(selectedSprintId)
+      toast.success("Sprint closed")
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
 
   const togglePriority = (priority: string) => {
     setPriorityFilter((prev) => {
@@ -232,6 +246,14 @@ export function SprintDashboardPanel({
               triggerLabel="+ Create Ticket"
             />
           )}
+          <Button type="button"
+              variant="secondary"
+              size="md"
+              // onClick={() => setSelectedTicketId(null)}
+              onClick={closeSprintDashboard}
+            >
+              Close Sprint
+          </Button>
         </div>
       </header>
 

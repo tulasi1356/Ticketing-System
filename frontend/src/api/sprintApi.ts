@@ -12,3 +12,7 @@ export const getSprints = () => apiClient("/sprints", {
 export const getSprintByProjectId = (projectId: number) => apiClient(`/sprints/get_sprint_by_project_id?project_id=${projectId}`, {
     method: "GET",
 })
+
+export const closeSprint = (sprintId: number) => apiClient(`/sprints/close/${sprintId}`, {
+    method: "POST",
+})

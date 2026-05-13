@@ -38,6 +38,8 @@ class TicketsController < ApplicationController
         page = params[:page].presence&.to_i
         page = 1 if page.nil? || page < 1
 
+        Rails.logger.info("result[:relation]: #{result[:relation].to_sql}")
+        
         @pagy, records = pagy(:offset, result[:relation], page: page, limit: 8)
 
         render json: {

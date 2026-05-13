@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       post :create
       get :index
       get :get_sprint_by_project_id
+      post "close/:sprint_id", action: :close, as: :close_sprint
     end
   end
 

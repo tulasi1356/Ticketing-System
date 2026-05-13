@@ -8,21 +8,20 @@ export const createProject =  (data: any) => apiClient("/projects", {
 })
 
 export const assignUsersToProject = (data: { id: number; user_ids: number[] }) =>
-  apiClient("/projects/assign_users_to_project", {
+  apiClient(`/projects/${data.id}/assign_users_to_project`, {
     method: "POST",
-    body: JSON.stringify(data),
+    body: JSON.stringify({ user_ids: data.user_ids }),
   })
 
 export const editProject = (data: { id: number; name: string; description: string }) =>
-  apiClient("/projects/edit_project", {
+  apiClient(`/projects/${data.id}`, {
     method: "PUT",
-    body: JSON.stringify(data),
+    body: JSON.stringify({ name: data.name, description: data.description }),
   })
 
-export const getProject = (id: number) => apiClient(`/projects/get_project?id=${id}`)  
+export const getProject = (id: number) => apiClient(`/projects/${id}`)
 
-
-export const deleteProject = (id: number) => apiClient("/projects/destroy_project", {
-    body: JSON.stringify({ id: id }),
+export const deleteProject = (id: number) =>
+  apiClient(`/projects/${id}`, {
     method: "DELETE",
-})
+  })

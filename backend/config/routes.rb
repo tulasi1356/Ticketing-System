@@ -9,24 +9,17 @@ Rails.application.routes.draw do
   # root "posts#index"
 
 
-  resources :users do 
+  resources :users, only: [:index, :create, :update, :destroy] do
     collection do
-      post :create
-      get :index
       get :find_by_email
       get :search
     end
   end
 
-
-  resource :projects do
-    collection do
-      post :create
-      get :index 
+ 
+  resources :projects, only: [:index, :create, :show, :update, :destroy] do
+    member do
       post :assign_users_to_project
-      put :edit_project
-      get :get_project
-      delete :destroy_project
     end
   end
 
@@ -38,14 +31,9 @@ Rails.application.routes.draw do
   end
 
 
-  resources :tickets do
+  resources :tickets, only: [:index, :create, :update] do
     collection do
-      post :create
-      get :index
       post :export
-    end
-    member do
-      patch :update
     end
   end
 

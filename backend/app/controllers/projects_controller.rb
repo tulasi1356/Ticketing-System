@@ -30,9 +30,8 @@ class ProjectsController < ApplicationController
 
 
     def assign_users_to_project
-        p = assign_users_params
-        project = Project.find(p[:id])
-        ids = Array(p[:user_ids]).flatten.map(&:to_i).reject(&:zero?).uniq
+        project = Project.find(params[:id])
+        ids = Array(assign_users_params[:user_ids]).flatten.map(&:to_i).reject(&:zero?).uniq
         users = User.where(id: ids)
         if project.update(user_ids: users.pluck(:id))
             project.reload
@@ -46,7 +45,14 @@ class ProjectsController < ApplicationController
 
 
 
-    def edit_project
+    def show
+        project = Project.find(params[:id])
+        render json: project.as_json(
+            include: { users: { only: [:id, :name, :email, :role] } }
+        ), status: :ok
+    end
+
+    def update
         project = Project.find(params[:id])
         if project.update(name: params[:name], description: params[:description])
             render json: project.as_json(
@@ -57,15 +63,7 @@ class ProjectsController < ApplicationController
         end
     end
 
-    def get_project
-        project = Project.find(params[:id])
-        render json: project.as_json(
-            include: { users: { only: [:id, :name, :email, :role] } }
-        ), status: :ok
-    end
-
-
-    def destroy_project
+    def destroy
         project = Project.find(params[:id])
         if project.destroy
             render json: { message: "Project deleted successfully" }, status: :ok
@@ -81,6 +79,6 @@ class ProjectsController < ApplicationController
     end
 
     def assign_users_params
-        params.permit(:id, user_ids: [])
+        params.permit(user_ids: [])
     end
 end

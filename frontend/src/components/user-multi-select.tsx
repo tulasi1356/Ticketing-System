@@ -20,7 +20,7 @@ type UserMultiSelectProps = {
   browseWhenEmpty?: UserMultiSelectUser[]
   placeholder?: string
   emptySearchHint?: string
-  /** Minimum query length before calling `/users/search`. Default 1. */
+  /** Minimum query length before calling `/api/v1/users/search`. Default 1. */
   minSearchLength?: number
   /** When set, search only returns users assigned to this project (ticket assignees / board filters). */
   projectId?: number | null

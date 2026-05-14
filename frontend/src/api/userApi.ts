@@ -1,7 +1,9 @@
-import { apiClient } from "./client";
-import type { User } from "../types/user";
+import { apiClient } from "./client"
+import type { User } from "../types/user"
 
-export const getUsers = (): Promise<User[]> => apiClient("/users");
+export type AuthResponse = { user: User; token: string }
+
+export const getUsers = (): Promise<User[]> => apiClient("/users")
 
 export const searchUsers = (
   query: string,
@@ -17,12 +19,14 @@ export const searchUsers = (
   })
 }
 
-export const createUser = (data: any) =>
-  apiClient("/users", {
+export const createUser = (data: { name: string; email: string; password: string }) =>
+  apiClient<AuthResponse>("/users", {
     method: "POST",
     body: JSON.stringify(data),
-  });
+  })
 
-export const findUserByEmail = (email: string): Promise<User> => apiClient(`/users/find_by_email?email=${encodeURIComponent(email)}`, {
-  method: "GET",
-});
+export const loginWithCredentials = (data: { email: string; password: string }) =>
+  apiClient<AuthResponse>("/sessions", {
+    method: "POST",
+    body: JSON.stringify(data),
+  })

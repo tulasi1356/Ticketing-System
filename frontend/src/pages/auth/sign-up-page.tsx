@@ -59,7 +59,7 @@ export default function SignUpPage() {
   const { t } = useTranslation()
   const signUpSchema = useMemo(() => createSignUpSchema(t), [t])
   const { mutateAsync: createUser } = useCreateUser()
-  const setUser = useAuthStore((s) => s.setUser)
+  const setSession = useAuthStore((s) => s.setSession)
   const navigate = useNavigate()
 
   const signUpForm = useForm<SignUpFormValues>({
@@ -74,12 +74,12 @@ export default function SignUpPage() {
 
   const onSubmit = async (data: SignUpFormValues) => {
     try {
-      const newUser = await createUser({
+      const { user, token } = await createUser({
         name: data.name,
         email: data.email,
         password: data.password,
       })
-      setUser(newUser)
+      setSession(user, token)
       navigate({ to: "/tickets" })
     } catch (error) {
       console.error("Error signing up:", error)

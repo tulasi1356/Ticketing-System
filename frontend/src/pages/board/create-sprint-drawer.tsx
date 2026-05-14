@@ -135,9 +135,9 @@ export default function CreateSprintDrawer({
       )}
 
       <Drawer open={open} onClose={() => setOpen(false)} ariaLabel="Create sprint">
-        <div className="flex h-full flex-col pt-12">
+        <div className="flex h-full flex-col pt-2">
           <div className="border-b border-gray-200 px-4 pb-4 pr-12 pt-1">
-            <p className="text-xs text-gray-500">Sprint</p>
+            {/* <p className="text-xs text-gray-500">Sprint</p> */}
             <h2 className="text-lg font-semibold text-gray-900">Create sprint</h2>
             <p className="mt-0.5 text-sm text-gray-600">{projectName}</p>
           </div>

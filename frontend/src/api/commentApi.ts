@@ -8,14 +8,13 @@ export type CreateCommentBody = {
 }
 
 export async function fetchTicketComments(ticketId: number): Promise<TicketComment[]> {
-  return apiClient(`/comments?ticket_id=${ticketId}`) as Promise<TicketComment[]>
+  return apiClient(`/tickets/${ticketId}/comments`) as Promise<TicketComment[]>
 }
 
 export async function createComment(body: CreateCommentBody): Promise<TicketComment> {
-  return apiClient("/comments", {
+  return apiClient(`/tickets/${body.ticket_id}/comments`, {
     method: "POST",
     body: JSON.stringify({
-      ticket_id: body.ticket_id,
       message: body.message,
       attachment_urls: body.attachment_urls ?? [],
     }),

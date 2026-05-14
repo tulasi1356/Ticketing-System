@@ -56,6 +56,19 @@ export function SprintBoardPage() {
     return (sprints ?? []).filter((s: Sprint) => s.project_id === selectedProjectId)
   }, [sprints, selectedProjectId])
 
+  /** Resolves immediately on project change; avoids fetching with a stale sprint from the previous project (backend 404). */
+  const effectiveSprintId = useMemo(() => {
+    if (selectedProjectId == null) return null
+    if (!sprintsForProject.length) return null
+    if (
+      selectedSprintId != null &&
+      sprintsForProject.some((s: Sprint) => s.id === selectedSprintId)
+    ) {
+      return selectedSprintId
+    }
+    return sprintsForProject[0].id
+  }, [selectedProjectId, selectedSprintId, sprintsForProject])
+
   useEffect(() => {
     if (!selectedProjectId) return
     if (!sprintsForProject.length) {
@@ -69,9 +82,9 @@ export function SprintBoardPage() {
   }, [selectedProjectId, sprintsForProject])
 
   const selectedProject = data?.find((p: Project) => p.id === selectedProjectId)
-  const selectedSprint = sprintsForProject.find((s: Sprint) => s.id === selectedSprintId)
+  const selectedSprint = sprintsForProject.find((s: Sprint) => s.id === effectiveSprintId)
 
-  const resetFiltersKey = `${boardView}-${selectedProjectId ?? ""}-${selectedSprintId ?? ""}`
+  const resetFiltersKey = `${boardView}-${selectedProjectId ?? ""}-${effectiveSprintId ?? ""}`
 
   if (!user) {
     return (
@@ -111,7 +124,7 @@ export function SprintBoardPage() {
         projects={data}
         sprints={sprints ?? []}
         selectedProjectId={selectedProjectId}
-        selectedSprintId={selectedSprintId}
+        selectedSprintId={effectiveSprintId}
         onSelectProject={setSelectedProjectId}
         onSelectSprint={setSelectedSprintId}
         onSprintCreated={setSelectedSprintId}
@@ -123,7 +136,7 @@ export function SprintBoardPage() {
         selectedProject={selectedProject}
         selectedSprint={selectedSprint}
         selectedProjectId={selectedProjectId}
-        selectedSprintId={selectedSprintId}
+        selectedSprintId={effectiveSprintId}
         sprintsForProject={sprintsForProject}
         projectDisplayName={selectedProject?.name ?? ""}
         boardView={boardView}

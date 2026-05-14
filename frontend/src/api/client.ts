@@ -4,18 +4,34 @@ const envOrigin = import.meta.env.VITE_API_URL?.replace(/\/$/, "").trim() ?? ""
 export const API_BASE_URL =
   envOrigin || (import.meta.env.DEV ? "" : "http://127.0.0.1:3000")
 
-const USER_SESSION_KEY = "user";
+/** Matches backend `namespace :api` / `:v1` in `config/routes.rb`. */
+export const API_V1_PREFIX = "/api/v1"
 
-function getStoredUserId(): number | null {
-  try {
-    const raw = sessionStorage.getItem(USER_SESSION_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as { id?: unknown };
-    const id = parsed?.id;
-    return typeof id === "number" ? id : null;
-  } catch {
-    return null;
+function resolveApiPath(url: string): string {
+  if (/^https?:\/\//i.test(url)) return url
+  const path = url.startsWith("/") ? url : `/${url}`
+  if (path === API_V1_PREFIX || path.startsWith(`${API_V1_PREFIX}/`)) return path
+  return `${API_V1_PREFIX}${path}`
+}
+
+/** Avoid `http://host:3000/api/v1` + `/api/v1/comments` → double `/api/v1` (404). */
+function joinBaseUrlAndPath(base: string, path: string): string {
+  if (!base) return path
+  const b = base.replace(/\/$/, "")
+  const p = path.startsWith("/") ? path : `/${path}`
+  if (b.endsWith(API_V1_PREFIX) && (p === API_V1_PREFIX || p.startsWith(`${API_V1_PREFIX}/`))) {
+    return `${b}${p.slice(API_V1_PREFIX.length) || "/"}`
   }
+  return `${b}${p}`
+}
+
+import { getAuthToken, getAuthUser } from "../lib/authCookies"
+
+/** Legacy header: used only if no Bearer token. */
+function getStoredUserIdForLegacyHeader(): number | null {
+  const user = getAuthUser()
+  const id = user?.id
+  return typeof id === "number" ? id : null
 }
 
 function extractErrorFromBody(text: string, status: number): string {
@@ -41,31 +57,36 @@ function extractErrorFromBody(text: string, status: number): string {
 
 /** @template T Parsed JSON body (defaults to any for legacy call sites). */
 export const apiClient = async <T = any>(url: string, options?: RequestInit): Promise<T> => {
-  const storedUserId = getStoredUserId();
-  const body = options?.body;
-  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
-  const baseHeaders = new Headers(options?.headers ?? undefined);
+  const body = options?.body
+  const isFormData = typeof FormData !== "undefined" && body instanceof FormData
+  const baseHeaders = new Headers(options?.headers ?? undefined)
 
-  if (storedUserId) baseHeaders.set("X-User-Id", String(storedUserId));
+  const token = getAuthToken()
+  if (token) {
+    baseHeaders.set("Authorization", `Bearer ${token}`)
+  } else {
+    const legacyId = getStoredUserIdForLegacyHeader()
+    if (legacyId) baseHeaders.set("X-User-Id", String(legacyId))
+  }
   if (!isFormData && !baseHeaders.has("Content-Type")) {
-    baseHeaders.set("Content-Type", "application/json");
+    baseHeaders.set("Content-Type", "application/json")
   }
 
-  const res = await fetch(`${API_BASE_URL}${url}`, {
+  const res = await fetch(joinBaseUrlAndPath(API_BASE_URL, resolveApiPath(url)), {
     ...options,
     headers: baseHeaders,
-  });
+  })
 
-  const raw = await res.text();
+  const raw = await res.text()
 
   if (!res.ok) {
-    throw new Error(extractErrorFromBody(raw, res.status));
+    throw new Error(extractErrorFromBody(raw, res.status))
   }
 
-  if (raw.trim() === "") return {} as T;
+  if (raw.trim() === "") return {} as T
   try {
-    return JSON.parse(raw) as T;
+    return JSON.parse(raw) as T
   } catch {
-    throw new Error("Unexpected response from server (not JSON)");
+    throw new Error("Unexpected response from server (not JSON)")
   }
-};
+}

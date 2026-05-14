@@ -10,9 +10,27 @@ class ApplicationController < ActionController::API
   def current_user
     return @current_user if defined?(@current_user)
 
-    user_id = request.headers["X-User-Id"].presence
-    @current_user = user_id ? User.find_by(id: user_id) : nil
+    @current_user = user_from_bearer_token 
+    # || user_from_legacy_header
   end
+
+  def user_from_bearer_token
+    auth = request.headers["Authorization"].to_s
+    return nil unless auth.start_with?("Bearer ")
+
+    token = auth.delete_prefix("Bearer ").strip
+    payload = JsonWebToken.decode(token)
+    return nil if payload.blank?
+
+    uid = payload[:sub]
+    User.find_by(id: uid) if uid.present?
+  end
+
+  # Deprecated: prefer Authorization Bearer JWT from /api/v1/sessions.
+  # def user_from_legacy_header
+  #   user_id = request.headers["X-User-Id"].presence
+  #   user_id ? User.find_by(id: user_id) : nil
+  # end
 
   def require_current_user
     return if current_user

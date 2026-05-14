@@ -39,12 +39,12 @@ module Tickets
         )
       end
 
-      if sprint.start_date >= attrs[:start_date].to_date && sprint.end_date <= attrs[:end_date].to_date
-        return failure(
-          :unprocessable_entity,
-          error: "Start date must be after or equal to sprint start date and end date must be before or equal to sprint end date",
-        )
-      end
+      # if sprint.start_date >= attrs[:start_date].to_date && sprint.end_date >= attrs[:end_date].to_date
+      #   return failure(
+      #     :unprocessable_entity,
+      #     error: "Start date must be after or equal to sprint start date and end date must be before or equal to sprint end date",
+      #   )
+      # end
 
       { ok: true, sprint: sprint }
     end
@@ -66,12 +66,12 @@ module Tickets
         )
       end
 
-      if sprint_data.present? && sprint_data.start_date > ticket.start_date && sprint_data.end_date < ticket.end_date
-        return failure(
-          :unprocessable_entity,
-          error: "Start date must be after or equal to sprint start date and end date must be before or equal to sprint end date",
-        )
-      end
+      # if sprint_data.present? && sprint_data.start_date >= ticket.start_date && sprint_data.end_date <= ticket.end_date
+      #   return failure(
+      #     :unprocessable_entity,
+      #     error: "Start date must be after or equal to sprint start date #{sprint_data.start_date} and end date must be before or equal to sprint end date #{sprint_data.end_date} ",
+      #   )
+      # end
 
       { ok: true }
     end

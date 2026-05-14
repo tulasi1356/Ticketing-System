@@ -13,9 +13,11 @@ class ExportAdminSummaryJob < ApplicationJob
       "#{ENV['EXPORT_MAIL_TO'].present? ? ', EXPORT_MAIL_TO override' : ''})"
     )
 
-    dm = ActionMailer::Base.delivery_method
+    dm = ActionMailer::Base.delivery_method\
+    Rails.logger.info("[ExportAdminSummaryJob] Delivery method: #{dm}")
     if dm.to_sym == :file
       loc = Rails.application.config.action_mailer.file_settings[:location]
+      Rails.logger.info("[ExportAdminSummaryJob] File location: #{loc}")
       Rails.logger.warn(
         "[ExportAdminSummaryJob] Log says \"Delivered mail\" but delivery is :file — nothing is sent over the internet. " \
         "Messages go under #{loc}. Set SENDGRID_API_KEY + SENDGRID_FROM_EMAIL in backend/ticketing_api/.env and restart Sidekiq."

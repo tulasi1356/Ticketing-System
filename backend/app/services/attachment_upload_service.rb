@@ -13,6 +13,7 @@ class AttachmentUploadService
 
       if S3_RESOURCE.present?
         begin
+          Rails.logger.info("[AttachmentUploadService] Uploading to MinIO")
           return MinioUploadService.upload(uploaded_file).fetch(:url)
         rescue StandardError => e
           Rails.logger.warn("[AttachmentUploadService] MinIO upload failed (#{e.class}), using disk instead: #{e.message}")

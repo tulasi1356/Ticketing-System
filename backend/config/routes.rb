@@ -8,38 +8,45 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  # Controllers live under `app/controllers/api/v1/*` as `Api::V1::*Controller`.
+  namespace :api do
+    namespace :v1 do
+      resources :sessions, only: [:create]
 
-  resources :users, only: [:index, :create, :update, :destroy] do
-    collection do
-      get :find_by_email
-      get :search
+      resources :users, only: [:index, :create, :update, :destroy] do
+        collection do
+          get :find_by_email
+          get :search
+        end
+      end
+
+      resources :projects, only: [:index, :create, :show, :update, :destroy] do
+        member do
+          post :assign_users_to_project
+        end
+      end
+
+      resources :sprints, only: [:index, :create] do
+        member do
+          post :close
+        end
+      end
+
+      resources :tickets, only: [:index, :create, :update] do
+        collection do
+          post :export
+        end
+        resources :comments, only: [:index, :create]
+      end
+
+      get "comments", to: "comments#index"
+      post "comments", to: "comments#create"
+
+      post "attachments/upload", to: "attachments#create"
+      get "attachments/disk/:filename", to: "attachments#show_disk", constraints: { filename: /[^\/]+/ }
     end
   end
 
- 
-  resources :projects, only: [:index, :create, :show, :update, :destroy] do
-    member do
-      post :assign_users_to_project
-    end
-  end
-
-
-  resources :sprints, only: [:index, :create] do
-    member do
-      post :close
-    end
-  end
-
-
-  resources :tickets, only: [:index, :create, :update] do
-    collection do
-      post :export
-    end
-  end
-
-  post "attachments/upload", to: "attachments#create"
-  get "attachments/disk/:filename", to: "attachments#show_disk", constraints: { filename: /[^\/]+/ }
-
-  resources :comments, only: [:index, :create]
-
+  # URLs saved before `/api/v1` (e.g. JSON `attachment_urls` or `<img src="/attachments/disk/...">`).
+  get "attachments/disk/:filename", to: "api/v1/attachments#show_disk", constraints: { filename: /[^\/]+/ }
 end

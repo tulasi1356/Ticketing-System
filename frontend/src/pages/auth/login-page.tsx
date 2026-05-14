@@ -6,7 +6,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import { FormInput } from "../../components/form/formInput"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "../../components/ui/button"
-import { findUserByEmail } from "../../api/userApi"
+import { loginWithCredentials } from "../../api/userApi"
 import { useAuthStore } from "../../stores/authStore"
 import {
   Card,
@@ -49,7 +49,7 @@ function LoginFields() {
 export default function LoginPage() {
   const { t } = useTranslation()
   const loginSchema = useMemo(() => createLoginSchema(t), [t])
-  const setUser = useAuthStore((s) => s.setUser)
+  const setSession = useAuthStore((s) => s.setSession)
 
   const loginForm = useForm<LoginFormValues>({
     mode: "onChange",
@@ -65,12 +65,11 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      const user = await findUserByEmail(data.email)
-      if (!user) {
-        toast.error(t("auth.login.noAccount"))
-        return
-      }
-      setUser(user)
+      const { user, token } = await loginWithCredentials({
+        email: data.email,
+        password: data.password,
+      })
+      setSession(user, token)
       navigate({ to: "/tickets" })
     } catch (e) {
       console.error("Login error:", e)

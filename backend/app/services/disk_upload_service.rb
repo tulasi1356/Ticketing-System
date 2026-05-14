@@ -21,7 +21,7 @@ class DiskUploadService
       File.binwrite(path, uploaded_file.read)
       uploaded_file.rewind if uploaded_file.respond_to?(:rewind)
 
-      "#{request.base_url}/attachments/disk/#{basename}"
+      "#{request.base_url}/api/v1/attachments/disk/#{basename}"
     end
   end
 end

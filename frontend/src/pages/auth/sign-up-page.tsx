@@ -74,12 +74,12 @@ export default function SignUpPage() {
 
   const onSubmit = async (data: SignUpFormValues) => {
     try {
-      const { user, token } = await createUser({
+      const { user } = await createUser({
         name: data.name,
         email: data.email,
         password: data.password,
       })
-      setSession(user, token)
+      setSession(user)
       navigate({ to: "/tickets" })
     } catch (error) {
       console.error("Error signing up:", error)

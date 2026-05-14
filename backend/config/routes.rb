@@ -11,7 +11,12 @@ Rails.application.routes.draw do
   # Controllers live under `app/controllers/api/v1/*` as `Api::V1::*Controller`.
   namespace :api do
     namespace :v1 do
-      resources :sessions, only: [:create]
+      resources :sessions, only: [:create] do
+        collection do
+          get :current
+        end
+      end
+      delete "sessions", to: "sessions#destroy"
 
       resources :users, only: [:index, :create, :update, :destroy] do
         collection do

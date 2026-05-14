@@ -22,10 +22,9 @@ module Api::V1
     def create
       user = build_user
       if user.save
-        render json: {
-          user: user.for_api,
-          token: JsonWebToken.encode(user.id)
-        }, status: :created
+        token = JsonWebToken.encode(user.id)
+        set_session_jwt_cookie(token)
+        render json: { user: user.for_api }, status: :created
       else
         render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
       end

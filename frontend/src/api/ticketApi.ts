@@ -146,10 +146,12 @@ export type TicketExportResponse = {
 }
 
 /** Admin-only: queues a Sidekiq job that emails a full project / sprint / ticket export (CSV attached). */
-export async function requestTicketExport(): Promise<TicketExportResponse> {
+export async function requestTicketExport(projectId: number): Promise<TicketExportResponse> {
   const raw = await apiClient<{ message: string; job_id?: string }>("/tickets/export", {
     method: "POST",
-    body: JSON.stringify({}),
+    body: JSON.stringify({
+      project_id: projectId,
+    }),
   })
   return { message: raw.message, jobId: raw.job_id }
 }

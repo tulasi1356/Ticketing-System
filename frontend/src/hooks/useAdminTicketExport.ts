@@ -5,10 +5,10 @@ import { requestTicketExport } from "../api/ticketApi"
 export function useAdminTicketExport() {
   const [busy, setBusy] = useState(false)
 
-  const run = async () => {
+  const run = async (projectId: number) => {
     setBusy(true)
     try {
-      const res = await requestTicketExport()
+      const res = await requestTicketExport(projectId)
       const title = res.message ?? "Export queued."
       const lines = [
         res.jobId ? `Job ID: ${res.jobId} (check Sidekiq / Redis if the email is slow).` : null,

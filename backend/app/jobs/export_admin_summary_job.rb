@@ -13,7 +13,7 @@ class ExportAdminSummaryJob < ApplicationJob
       "#{ENV['EXPORT_MAIL_TO'].present? ? ', EXPORT_MAIL_TO override' : ''})"
     )
 
-    dm = ActionMailer::Base.delivery_method\
+    dm = ActionMailer::Base.delivery_method
     Rails.logger.info("[ExportAdminSummaryJob] Delivery method: #{dm}")
     if dm.to_sym == :file
       loc = Rails.application.config.action_mailer.file_settings[:location]

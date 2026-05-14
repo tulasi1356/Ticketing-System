@@ -249,7 +249,7 @@ export function SprintDashboardPanel({
               variant="white"
               size="md"
               disabled={exportBusy}
-              onClick={() => void runAdminExport()}
+              onClick={() => void runAdminExport(selectedProjectId)}
             >
               {exportBusy ? (
                 <>

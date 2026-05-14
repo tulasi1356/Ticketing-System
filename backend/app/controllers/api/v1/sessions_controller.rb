@@ -11,10 +11,20 @@ module Api::V1
         return render json: { error: "Invalid email or password" }, status: :unauthorized
       end
 
-      render json: {
-        user: user.for_api,
-        token: JsonWebToken.encode(user.id)
-      }, status: :ok
+      token = JsonWebToken.encode(user.id)
+      set_session_jwt_cookie(token)
+      render json: { user: user.for_api }, status: :ok
+    end
+
+    def current
+      return render json: { error: "Unauthorized" }, status: :unauthorized unless current_user
+
+      render json: { user: current_user.for_api }, status: :ok
+    end
+
+    def destroy
+      clear_session_jwt_cookie!
+      head :no_content
     end
 
     private

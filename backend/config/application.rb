@@ -28,5 +28,8 @@ module TicketingApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # HttpOnly session cookie for browser clients (see ApplicationController + Api::V1::SessionsController).
+    config.middleware.use ActionDispatch::Cookies
   end
 end

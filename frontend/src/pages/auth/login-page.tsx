@@ -65,11 +65,11 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      const { user, token } = await loginWithCredentials({
+      const { user } = await loginWithCredentials({
         email: data.email,
         password: data.password,
       })
-      setSession(user, token)
+      setSession(user)
       navigate({ to: "/tickets" })
     } catch (e) {
       console.error("Login error:", e)

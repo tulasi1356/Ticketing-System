@@ -1,8 +1,9 @@
 import { Cookies } from "react-cookie"
 import type { User } from "../types/user"
 
-const TOKEN_KEY = "ticketing_auth_token"
 const USER_KEY = "ticketing_user"
+/** Legacy client-readable JWT cookie — cleared on next login / logout. */
+const LEGACY_TOKEN_KEY = "ticketing_auth_token"
 
 const jar = new Cookies()
 
@@ -25,10 +26,6 @@ function removeOpts() {
   return { path: "/" as const }
 }
 
-export function getAuthToken(): string | null {
-  return getRaw(TOKEN_KEY)
-}
-
 export function getAuthUser(): User | null {
   const raw = getRaw(USER_KEY)
   if (!raw) return null
@@ -39,24 +36,21 @@ export function getAuthUser(): User | null {
   }
 }
 
-export function readAuthSession(): { user: User | null; token: string | null } {
-  const user = getAuthUser()
-  const token = getAuthToken()
-  if (user && !token) {
-    jar.remove(USER_KEY, removeOpts())
-    return { user: null, token: null }
-  }
-  // Token without user can happen briefly or if user cookie failed — never drop a valid JWT here.
-  return { user, token }
+export function readAuthSession(): { user: User | null } {
+  return { user: getAuthUser() }
 }
 
-export function writeAuthSession(user: User, token: string): void {
+/** Persist user for UI after login; JWT stays in httpOnly `ticketing_session_jwt` from the API only. */
+export function writeAuthUserCookie(user: User): void {
   const opts = cookieSetOptions()
-  jar.set(TOKEN_KEY, token, opts)
   jar.set(USER_KEY, JSON.stringify(user), opts)
 }
 
+export function clearLegacyAuthTokenCookie(): void {
+  jar.remove(LEGACY_TOKEN_KEY, removeOpts())
+}
+
 export function clearAuthSession(): void {
-  jar.remove(TOKEN_KEY, removeOpts())
   jar.remove(USER_KEY, removeOpts())
+  jar.remove(LEGACY_TOKEN_KEY, removeOpts())
 }

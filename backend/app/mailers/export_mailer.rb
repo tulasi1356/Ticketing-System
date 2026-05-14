@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ExportMailer < ApplicationMailer
-  def admin_summary(user)
-    @body = AdminExportSummary.build
+  def admin_summary(user, project_id)
+    @body = AdminExportSummary.build(project_id)
     ts = Time.zone.now.strftime("%Y%m%d-%H%M%S")
     attachments["ticket-export-#{ts}.csv"] = {
       mime_type: "text/csv; charset=utf-8",

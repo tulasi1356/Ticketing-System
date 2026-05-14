@@ -19,8 +19,9 @@ import { Navbar } from './components/navbar'
 const rootRoute = createRootRoute({
     component: RootLayout,
 
+    beforeLoad: async ({ location }) => {
+        await useAuthStore.getState().bootstrapSession()
 
-    beforeLoad: ({ location }) => {
         const user = useAuthStore.getState().user
         const path = location.pathname
 

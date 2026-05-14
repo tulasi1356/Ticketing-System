@@ -3,21 +3,16 @@
 require "csv"
 
 class AdminExportSummary
-  def self.build
+  def self.build(project_id)
     parts = []
     parts << "Ticket system export"
     parts << "Generated at: #{Time.zone.now.iso8601}"
     parts << ""
     parts << "A CSV spreadsheet is attached: all projects, sprints, and tickets with statuses."
     parts << ""
-    parts << "=== All users ==="
-    User.find_each do |u|
-      parts << "  id=#{u.id}  #{u.email}  #{u.name}  role=#{u.role}"
-    end
-    parts << ""
     parts << "=== Tickets (summary) ==="
     parts << "project | sprint | ticket | status | priority | assignee | title"
-    Ticket.includes(:project, :sprint, :assignee).find_each do |t|
+    Ticket.includes(:project, :sprint, :assignee).where(project_id: project_id).find_each do |t|
       p = t.project
       s = t.sprint
       a = t.assignee
@@ -33,7 +28,7 @@ class AdminExportSummary
     end
     parts << ""
 
-    Project.includes(:sprints).find_each do |project|
+    Project.includes(:sprints).where(id: project_id).find_each do |project|
       parts << "=== Project: #{project.name} (id=#{project.id}) ==="
       parts << "Description: #{project.description}"
       parts << ""

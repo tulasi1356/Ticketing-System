@@ -25,9 +25,9 @@ function joinBaseUrlAndPath(base: string, path: string): string {
   return `${b}${p}`
 }
 
-import { getAuthToken, getAuthUser } from "../lib/authCookies"
+import { getAuthUser } from "../lib/authCookies"
 
-/** Legacy header: used only if no Bearer token. */
+/** Legacy header when no session cookie / Bearer (non-browser clients). */
 function getStoredUserIdForLegacyHeader(): number | null {
   const user = getAuthUser()
   const id = user?.id
@@ -61,19 +61,15 @@ export const apiClient = async <T = any>(url: string, options?: RequestInit): Pr
   const isFormData = typeof FormData !== "undefined" && body instanceof FormData
   const baseHeaders = new Headers(options?.headers ?? undefined)
 
-  const token = getAuthToken()
-  if (token) {
-    baseHeaders.set("Authorization", `Bearer ${token}`)
-  } else {
-    const legacyId = getStoredUserIdForLegacyHeader()
-    if (legacyId) baseHeaders.set("X-User-Id", String(legacyId))
-  }
+  const legacyId = getStoredUserIdForLegacyHeader()
+  if (legacyId) baseHeaders.set("X-User-Id", String(legacyId))
   if (!isFormData && !baseHeaders.has("Content-Type")) {
     baseHeaders.set("Content-Type", "application/json")
   }
 
   const res = await fetch(joinBaseUrlAndPath(API_BASE_URL, resolveApiPath(url)), {
     ...options,
+    credentials: "include",
     headers: baseHeaders,
   })
 

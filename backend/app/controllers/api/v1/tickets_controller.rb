@@ -58,7 +58,7 @@ module Api::V1
     end
 
     def export
-      job = ExportAdminSummaryJob.perform_later(current_user.id)
+      job = ExportAdminSummaryJob.perform_later(current_user.id, params[:project_id])
       render json: {
         message: "Export queued. You will receive an email with a CSV attachment shortly.",
         job_id: job.job_id

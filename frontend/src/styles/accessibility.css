@@ -1,0 +1,12 @@
+/**
+ * Global accessibility helpers — contrast hooks.
+ * Tokens live in design-tokens.css; Tailwind theme in index.css.
+ */
+
+@media (prefers-contrast: more) {
+  :root {
+    --app-border: var(--palette-gray-400);
+    --app-border-subtle: var(--palette-gray-300);
+    --app-fg-subtle: var(--palette-gray-700);
+  }
+}

@@ -145,13 +145,28 @@ export type TicketExportResponse = {
   jobId?: string
 }
 
-/** Admin-only: queues a Sidekiq job that emails a full project / sprint / ticket export (CSV attached). */
-export async function requestTicketExport(projectId: number): Promise<TicketExportResponse> {
+/** Same scope as the board (project, sprint / view, filters). Admin-only. */
+export type TicketExportParams = Omit<GetTicketsBoardParams, "page">
+
+/** Admin-only: queues a Sidekiq job that emails a CSV for the current board scope and filters. */
+export async function requestTicketExport(params: TicketExportParams): Promise<TicketExportResponse> {
+  const body: Record<string, unknown> = {
+    project_id: params.projectId,
+    board_view: params.boardView,
+  }
+  if (params.sprintId != null && params.sprintId > 0) {
+    body.sprint_id = params.sprintId
+  }
+  if (params.q?.trim()) body.q = params.q.trim()
+  if (params.priorities?.length) body.priorities = params.priorities
+  if (params.statuses?.length) body.statuses = params.statuses
+  if (params.assigneeIds?.length) body.assignee_ids = params.assigneeIds
+  if (params.dateFrom) body.date_from = params.dateFrom
+  if (params.dateTo) body.date_to = params.dateTo
+
   const raw = await apiClient<{ message: string; job_id?: string }>("/tickets/export", {
     method: "POST",
-    body: JSON.stringify({
-      project_id: projectId,
-    }),
+    body: JSON.stringify(body),
   })
   return { message: raw.message, jobId: raw.job_id }
 }

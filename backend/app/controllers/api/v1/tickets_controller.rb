@@ -58,14 +58,35 @@ module Api::V1
     end
 
     def export
-      job = ExportAdminSummaryJob.perform_later(current_user.id, params[:project_id])
+      payload = export_board_params
+      result = Tickets::BoardQueryService.call(params: ActionController::Parameters.new(payload))
+      unless result[:ok]
+        return render json: result[:body], status: result[:status]
+      end
+
+      job = ExportAdminSummaryJob.perform_later(current_user.id, payload.stringify_keys)
       render json: {
-        message: "Export queued. You will receive an email with a CSV attachment shortly.",
+        message: "Export queued. You will receive an email with a CSV for this board scope and filters.",
         job_id: job.job_id
       }, status: :accepted
     end
 
     private
+
+    def export_board_params
+      p = params.permit(
+        :project_id,
+        :board_view,
+        :sprint_id,
+        :q,
+        :date_from,
+        :date_to,
+        priorities: [],
+        statuses: [],
+        assignee_ids: []
+      )
+      p.to_h
+    end
 
     def ticket_update_params
       params.permit(

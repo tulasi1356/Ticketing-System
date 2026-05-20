@@ -248,8 +248,25 @@ export function SprintDashboardPanel({
               type="button"
               variant="white"
               size="md"
-              disabled={exportBusy}
-              onClick={() => void runAdminExport(selectedProjectId)}
+              disabled={
+                exportBusy ||
+                (boardView === "sprint" && (selectedSprintId == null || selectedSprintId <= 0))
+              }
+              onClick={() => {
+                if (!selectedProjectId) return
+                if (boardView === "sprint" && (selectedSprintId == null || selectedSprintId <= 0)) return
+                void runAdminExport({
+                  projectId: selectedProjectId,
+                  boardView,
+                  sprintId: boardView === "sprint" ? selectedSprintId ?? undefined : undefined,
+                  q: debouncedSearch.trim() || undefined,
+                  priorities: priorityFilter.size > 0 ? [...priorityFilter] : undefined,
+                  statuses: statusFilter.size > 0 ? [...statusFilter] : undefined,
+                  assigneeIds: assigneeFilter.size > 0 ? [...assigneeFilter] : undefined,
+                  dateFrom: dateFrom || undefined,
+                  dateTo: dateTo || undefined,
+                })
+              }}
             >
               {exportBusy ? (
                 <>

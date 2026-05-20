@@ -2,61 +2,44 @@
 
 module Tickets
   class BoardQueryService
-    def self.call(current_user:, params:)
-      new(current_user: current_user, params: params).call
+    def self.call(params:)
+      new(params: params).call
     end
 
-    def initialize(current_user:, params:)
-      @current_user = current_user
+    def initialize(params:)
       @params = params
     end
 
     def call
-      relation = build_relation
-      return relation if relation[:ok] == false
+      checked = BoardQueryValidator.call(params: @params)
+      return checked unless checked[:ok]
 
+      ctx = checked[:context]
+      relation = build_relation(ctx)
       rel = relation[:relation]
-      project_id = @params[:project_id].presence&.to_i
+      project_id = ctx[:project_id]
       stats = cached_stats_for(rel, project_id)
       { ok: true, relation: rel, stats: stats }
     end
 
     private
 
-    def build_relation
-      project_id = @params[:project_id].presence&.to_i
-      if project_id.blank? || project_id <= 0
-        return failure(:unprocessable_entity, error: "project_id is required")
-      end
-
-      unless Project.exists?(id: project_id)
-        return failure(:not_found, error: "Project not found")
-      end
-
-      unless @current_user.admin? || @current_user.projects.exists?(id: project_id)
-        return failure(:forbidden, error: "Forbidden")
-      end
+    def build_relation(ctx)
+      project_id = ctx[:project_id]
+      board_view = ctx[:board_view]
+      sprint_id = ctx[:sprint_id]
 
       scope = Ticket.includes(:assignee).where(project_id: project_id)
 
-      case (@params[:board_view].presence || "sprint").to_s
+      case board_view
       when "sprint"
-        sprint_id = @params[:sprint_id].presence&.to_i
-        if sprint_id.blank? || sprint_id <= 0
-          return failure(:unprocessable_entity, error: "sprint_id is required for sprint board_view")
-        end
-        unless Sprint.exists?(id: sprint_id, project_id: project_id)
-          return failure(:not_found, error: "Sprint not found for this project")
-        end
         scope = scope.where(sprint_id: sprint_id)
       when "all"
         # scoped to project only
       when "mine"
-        scope = scope.where(assignee_id: @current_user.id)
+        scope = scope.where(assignee_id: Current.user.id)
       when "backlog"
         scope = scope.where(sprint_id: nil)
-      else
-        return failure(:unprocessable_entity, error: "Invalid board_view")
       end
 
       scope = apply_ticket_filters(scope, project_id)
@@ -98,8 +81,6 @@ module Tickets
       scope
     end
 
-
-    
     def cached_stats_for(relation, project_id)
       gen = Rails.cache.read(Ticket.board_stats_generation_cache_key(project_id)) || 0
       filters = board_stats_filters_key
@@ -109,7 +90,6 @@ module Tickets
       end
     end
 
-    
     def board_stats_filters_key
       prio = enum_tokens_param(@params[:priorities], Ticket.priorities.keys).sort.join(",")
       stat = enum_tokens_param(@params[:statuses], Ticket.statuses.keys).sort.join(",")
@@ -123,7 +103,7 @@ module Tickets
         assigns,
         @params[:date_from].to_s,
         @params[:date_to].to_s,
-        @current_user.id
+        Current.user.id
       ].join("|")
     end
 
@@ -156,10 +136,6 @@ module Tickets
 
     def integer_list_param(raw)
       coalesce_string_list(raw).map { |s| s.strip.to_i }.reject { |n| n <= 0 }.uniq
-    end
-
-    def failure(status, error:)
-      { ok: false, status: status, body: { error: error } }
     end
   end
 end

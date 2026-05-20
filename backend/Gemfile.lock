@@ -173,6 +173,8 @@ GEM
       reline (>= 0.4.2)
     jmespath (1.6.2)
     json (2.19.5)
+    jwt (2.10.2)
+      base64
     kamal (2.11.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -424,6 +426,7 @@ DEPENDENCIES
   elasticsearch-model
   elasticsearch-rails
   image_processing (~> 1.2)
+  jwt (~> 2.10)
   kamal
   pagy
   puma (>= 5.0)

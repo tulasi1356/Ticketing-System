@@ -1,39 +1,78 @@
 import { create } from "zustand"
 import type { User } from "../types/user"
 import { immer } from "zustand/middleware/immer"
-
-const USER_SESSION_KEY = "user"
-
-function readStoredUser(): User | null {
-    try {
-        const raw = sessionStorage.getItem(USER_SESSION_KEY)
-        if (!raw) return null
-        return JSON.parse(raw) as User
-    } catch {
-        return null
-    }
-}
+import {
+  clearAuthSession,
+  clearLegacyAuthTokenCookie,
+  readAuthSession,
+  writeAuthUserCookie,
+} from "../lib/authCookies"
+import { getCurrentSession, logoutSession } from "../api/userApi"
 
 type AuthState = {
-    user: User | null
-    setUser: (user: User | null) => void,
-    logOut: () => void,
+  user: User | null
+  /** False until the first `GET /sessions/current` finishes (success or failure). */
+  sessionChecked: boolean
+  setSession: (user: User) => void
+  bootstrapSession: () => Promise<void>
+  logOut: () => Promise<void>
 }
 
-export const useAuthStore = create<AuthState>() (
-    immer((set) => ({
-        user: readStoredUser(),
-        setUser: (user) => set((state) => {
-            state.user = user
-            if (user === null) {
-                sessionStorage.removeItem(USER_SESSION_KEY)
-            } else {
-                sessionStorage.setItem(USER_SESSION_KEY, JSON.stringify(user))
-            }
+let bootstrapInflight: Promise<void> | null = null
+
+export const useAuthStore = create<AuthState>()(
+  immer((set, get) => {
+    const initial = readAuthSession()
+    return {
+      user: initial.user,
+      sessionChecked: false,
+      setSession: (user) =>
+        set((state) => {
+          state.user = user
+          state.sessionChecked = true
+          clearLegacyAuthTokenCookie()
+          writeAuthUserCookie(user)
         }),
-        logOut: () => set((state) => {
-            state.user = null
-            sessionStorage.removeItem(USER_SESSION_KEY)
-        }),
-    }))
+      bootstrapSession: async () => {
+        if (get().sessionChecked) return
+        if (bootstrapInflight) {
+          await bootstrapInflight
+          return
+        }
+        bootstrapInflight = (async () => {
+          try {
+            const { user } = await getCurrentSession()
+            set((state) => {
+              state.user = user
+              clearLegacyAuthTokenCookie()
+              writeAuthUserCookie(user)
+            })
+          } catch {
+            set((state) => {
+              state.user = null
+              clearAuthSession()
+            })
+          } finally {
+            set((state) => {
+              state.sessionChecked = true
+            })
+            bootstrapInflight = null
+          }
+        })()
+        await bootstrapInflight
+      },
+      logOut: async () => {
+        try {
+          await logoutSession()
+        } catch {
+          // Still clear local state if the network fails.
+        }
+        set((state) => {
+          state.user = null
+          state.sessionChecked = false
+          clearAuthSession()
+        })
+      },
+    }
+  }),
 )

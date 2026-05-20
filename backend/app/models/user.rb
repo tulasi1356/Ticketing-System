@@ -23,6 +23,10 @@ class User < ApplicationRecord
     validates :name, presence: true
     validates :email, presence: true, uniqueness: true
 
+    def for_api
+      { id: id, name: name, email: email, role: role }
+    end
+
     settings do
         mappings dynamic: false do
             indexes :name, type: :search_as_you_type

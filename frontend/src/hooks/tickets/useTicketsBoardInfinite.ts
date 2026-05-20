@@ -1,10 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
 
 import { getTicketsBoard } from "../../api/ticketApi"
-import type { BoardView } from "../../pages/ticketing/types"
+import type { BoardView } from "../../types/ticketing"
 
 export function useTicketsBoardInfinite(opts: {
-  enabled: boolean
   projectId: number | null
   sprintId: number | null
   boardView: BoardView
@@ -16,7 +15,6 @@ export function useTicketsBoardInfinite(opts: {
   dateTo: string
 }) {
   const {
-    enabled,
     projectId,
     sprintId,
     boardView,
@@ -30,7 +28,7 @@ export function useTicketsBoardInfinite(opts: {
 
   const projectOk = projectId != null && projectId > 0
   const sprintOk = boardView !== "sprint" || (sprintId != null && sprintId > 0)
-  const canFetch = enabled && projectOk && sprintOk
+  const canFetch = projectOk && sprintOk
 
   return useInfiniteQuery({
     queryKey: [

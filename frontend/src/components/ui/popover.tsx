@@ -28,18 +28,33 @@ interface PopoverContentProps
 export const PopoverContent = React.forwardRef<
   React.ElementRef<typeof RadixPopover.Content>,
   PopoverContentProps
->(({ size = "md", ...props }, ref) => (
-  <RadixPopover.Portal>
-    <RadixPopover.Content
-      ref={ref}
-      sideOffset={8}
-      className={cn(
-        "rounded-md border bg-white p-4 shadow-md",
-        sizeClasses[size],
-      )}
-      {...props}
-    />
-  </RadixPopover.Portal>
-))
+>(
+  (
+    {
+      size = "md",
+      className,
+      sideOffset = 8,
+      collisionPadding = 16,
+      avoidCollisions = true,
+      ...props
+    },
+    ref,
+  ) => (
+    <RadixPopover.Portal>
+      <RadixPopover.Content
+        ref={ref}
+        sideOffset={sideOffset}
+        collisionPadding={collisionPadding}
+        avoidCollisions={avoidCollisions}
+        className={cn(
+          "z-50 max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-md border bg-white p-4 shadow-md outline-none",
+          sizeClasses[size],
+          className,
+        )}
+        {...props}
+      />
+    </RadixPopover.Portal>
+  ),
+)
 
 PopoverContent.displayName = "PopoverContent"
